@@ -32,7 +32,7 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         public override void WriteToStream(Type type, object value, Stream writeStream, Encoding effectiveEncoding)
         {
-            base.WriteToStream(type, value, writeStream, effectiveEncoding);
+            //base.WriteToStream(type, value, writeStream, effectiveEncoding);
 
             var formatting = this.Indent ? Formatting.Indented : Formatting.None;
             var so = this.SerializerSettings == null
@@ -47,19 +47,27 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return;
             }
 
-            var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, new { href = p.Href }));
-            var sls = this.SerializerSettings == null
-                ? JsonConvert.SerializeObject(links, formatting)
-                : JsonConvert.SerializeObject(links, formatting, this.SerializerSettings);
+            var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, new { href = p.Href })).ToList();
+            var sb = new StringBuilder();
+            sb.Append("{");
+            for (var i = 0; i <links.Count; i++)
+            {
+                var link = links[i];
+                sb.AppendFormat("\"{0}\": {1}{2}",
+                                link.Key,
+                                JsonConvert.SerializeObject(link.Value),
+                                i == links.Count - 1 ? "" : ",");
+            }
+            sb.Append("}");
 
-            var jlo = JObject.Parse(sls);
+            var jlo = JObject.Parse(sb.ToString());
             jo["_links"] = jlo;
 
-            using (var sw = new StreamWriter(writeStream))
-            using (var writer = new JsonTextWriter(sw))
-            {
-                jo.WriteTo(writer);
-            }
+            var sw = new StreamWriter(writeStream);
+            var writer = new JsonTextWriter(sw);
+            jo.WriteTo(writer);
+            writer.Flush();
+            sw.Flush();
         }
 
         //public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content,
