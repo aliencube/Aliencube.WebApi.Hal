@@ -1,6 +1,6 @@
-# Aliencube.HAL #
+# Aliencube.WebApi.Hal #
 
-**Aliencube.HAL** provides REST responses with [HAL specification](https://tools.ietf.org/html/draft-kelly-json-hal) in Web API apps.
+**Aliencube.WebApi.Hal** provides REST responses with [HAL specification](https://tools.ietf.org/html/draft-kelly-json-hal) in Web API apps.
 
 
 ## Contribution ##
@@ -10,7 +10,7 @@ Your contributions are always welcome! All your work should be done in your fork
 
 ## License ##
 
-**Aliencube.HAL** is released under [MIT License](http://opensource.org/licenses/MIT)
+**Aliencube.WebApi.Hal** is released under [MIT License](http://opensource.org/licenses/MIT)
 
 > The MIT License (MIT)
 >
