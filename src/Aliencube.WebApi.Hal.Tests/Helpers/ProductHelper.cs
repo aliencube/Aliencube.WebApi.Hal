@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Aliencube.WebApi.Hal.Extensions;
 using Aliencube.WebApi.Hal.Resources;
 using Aliencube.WebApi.Hal.Tests.Models;
 
@@ -25,9 +26,13 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
                               Href = string.Format("/products/{0}", productId),
                           };
 
-            product.Links.Add(new Link() { Rel = "self", Href = string.Format("/products/{0}", productId) });
-            product.Links.Add(new Link() { Rel = "find", Href = "/products{?id}" });
-            product.Links.Add(new Link() { Rel = "rel", Href = "/products" });
+            var links = new List<Link>()
+                        {
+                            new Link() { Rel = "self", Href = string.Format("/products/{0}", productId) },
+                            new Link() { Rel = "find", Href = "/products{?id}" },
+                            new Link() { Rel = "rel", Href = "/products" },
+                        };
+            product.AddLinks(links);
 
             return product;
         }
@@ -47,7 +52,10 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
             }
 
             var products = new Products(items);
-            products.Links.Add(new Link() { Rel = "self", Href = "/products" });
+
+            var link = new Link() { Rel = "self", Href = "/products" };
+            products.AddLink(link);
+
             return products;
         }
     }
