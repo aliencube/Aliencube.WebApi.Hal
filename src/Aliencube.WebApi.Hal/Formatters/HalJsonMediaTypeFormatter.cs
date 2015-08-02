@@ -50,7 +50,7 @@ namespace Aliencube.WebApi.Hal.Formatters
             var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, new { href = p.Href })).ToList();
             var sb = new StringBuilder();
             sb.Append("{");
-            for (var i = 0; i <links.Count; i++)
+            for (var i = 0; i < links.Count; i++)
             {
                 var link = links[i];
                 sb.AppendFormat("\"{0}\": {1}{2}",
@@ -92,8 +92,32 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private static bool IsSupportedType(Type type)
         {
-            var isLinkedResourceType = type.IsSubclassOf(typeof(LinkedResource));
-            return isLinkedResourceType;
+            var isLinkedResourceType = IsLinkedResourceType(type);
+            var isLinkedResourceCollectionType = IsLinkedResourceCollectionType(type);
+
+            return isLinkedResourceType || isLinkedResourceCollectionType;
+        }
+
+        private static bool IsLinkedResourceType(Type type)
+        {
+            return type.IsSubclassOf(typeof(LinkedResource));
+        }
+
+        private static bool IsLinkedResourceCollectionType(Type type)
+        {
+            var typeToCheck = type;
+            while (typeToCheck != null && typeToCheck != typeof(object))
+            {
+                var currentType = typeToCheck.IsGenericType ? typeToCheck.GetGenericTypeDefinition() : typeToCheck;
+                if (currentType == typeof(LinkedResourceCollection<>))
+                {
+                    return true;
+                }
+
+                typeToCheck = typeToCheck.BaseType;
+            }
+
+            return false;
         }
     }
 }
