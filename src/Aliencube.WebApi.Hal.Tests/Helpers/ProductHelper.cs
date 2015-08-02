@@ -26,6 +26,7 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
                           };
 
             product.Links.Add(new Link() { Rel = "self", Href = string.Format("/products/{0}", productId) });
+            product.Links.Add(new Link() { Rel = "find", Href = "/products{?id}" });
             product.Links.Add(new Link() { Rel = "rel", Href = "/products" });
 
             return product;
