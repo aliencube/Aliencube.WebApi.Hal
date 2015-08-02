@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text;
 using Aliencube.WebApi.Hal.Formatters;
 using Aliencube.WebApi.Hal.Tests.Helpers;
@@ -73,6 +74,54 @@ namespace Aliencube.WebApi.Hal.Tests
 
                 var links = jo.SelectToken("_links");
                 links.Should().NotBeNullOrEmpty();
+
+                var embedded = jo.SelectToken("_embedded");
+                embedded.Should().BeNullOrEmpty();
+
+                var rel = jo.SelectToken("rel");
+                rel.Should().BeNullOrEmpty();
+
+                var href = jo.SelectToken("href");
+                href.Should().BeNullOrEmpty();
+            }
+
+            this._formatter.EmbeddedType = EmbeddedType.Embedded;
+
+            using (var stream = new MemoryStream())
+            {
+                this._formatter.WriteToStream(typeof(Product), product, stream, Encoding.UTF8);
+                var jo = FormatterHelper.ParseJsonStream(stream);
+
+                var links = jo.SelectToken("_links");
+                links.Should().NotBeNullOrEmpty();
+
+                var embedded = jo.SelectToken("_embedded");
+                embedded.Should().NotBeNullOrEmpty();
+
+                var rel = jo.SelectToken("rel");
+                rel.Should().BeNullOrEmpty();
+
+                var href = jo.SelectToken("href");
+                href.Should().BeNullOrEmpty();
+            }
+        }
+
+        [Test]
+        public void GivenProductsShouldReturnHalJsonObject()
+        {
+            var products = ProductHelper.GetProducts(2);
+
+            using (var stream = new MemoryStream())
+            {
+                this._formatter.WriteToStream(typeof(Products), products, stream, Encoding.UTF8);
+                var jo = FormatterHelper.ParseJsonStream(stream);
+
+                var links = jo.SelectToken("_links");
+                links.Should().NotBeNullOrEmpty();
+
+                var embedded = jo.SelectToken("_embedded");
+                embedded.Should().NotBeNullOrEmpty();
+                embedded.Count().Should().Be(2);
 
                 var rel = jo.SelectToken("rel");
                 rel.Should().BeNullOrEmpty();

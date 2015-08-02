@@ -46,6 +46,7 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
             }
 
             var products = new Products(items);
+            products.Links.Add(new Link() { Rel = "self", Href = "/products" });
             return products;
         }
     }
