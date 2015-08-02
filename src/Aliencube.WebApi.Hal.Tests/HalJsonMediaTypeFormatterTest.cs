@@ -1,12 +1,10 @@
 ﻿using System.IO;
 using System.Text;
 using Aliencube.WebApi.Hal.Formatters;
-using Aliencube.WebApi.Hal.Resources;
 using Aliencube.WebApi.Hal.Tests.Helpers;
 using Aliencube.WebApi.Hal.Tests.Models;
 using FluentAssertions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
@@ -36,18 +34,37 @@ namespace Aliencube.WebApi.Hal.Tests
         }
 
         [Test]
+        public void GivenTypeShouldBeAbleToRead()
+        {
+            var product = ProductHelper.GetProduct(1);
+
+            var result = this._formatter.CanReadType(product.GetType());
+            result.Should().BeTrue();
+
+            var products = ProductHelper.GetProducts(2);
+
+            result = this._formatter.CanReadType(products.GetType());
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void GivenTypeShouldBeAbleToWrite()
+        {
+            var product = ProductHelper.GetProduct(1);
+
+            var result = this._formatter.CanWriteType(product.GetType());
+            result.Should().BeTrue();
+
+            var products = ProductHelper.GetProducts(2);
+
+            result = this._formatter.CanWriteType(products.GetType());
+            result.Should().BeTrue();
+        }
+
+        [Test]
         public void GivenProductShouldReturnHalJsonObject()
         {
-            var product = new Product()
-                          {
-                              ProductId = 1,
-                              Name = "Product 1",
-                              Description = "Product Description 1",
-                              Rel = "self",
-                              Href = "/products/1",
-                          };
-            product.Links.Add(new Link() { Rel = "self", Href = "/products/1" });
-            product.Links.Add(new Link() { Rel = "rel", Href = "/products" });
+            var product = ProductHelper.GetProduct(1);
 
             using (var stream = new MemoryStream())
             {
