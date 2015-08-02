@@ -11,33 +11,87 @@ using Newtonsoft.Json.Linq;
 
 namespace Aliencube.WebApi.Hal.Formatters
 {
+    /// <summary>
+    /// This repressents the formatter entity to support JSON response format with HAL.
+    /// </summary>
     public class HalJsonMediaTypeFormatter : JsonMediaTypeFormatter
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HalJsonMediaTypeFormatter" /> class.
+        /// </summary>
         public HalJsonMediaTypeFormatter()
         {
             this.SetSupportedMediaTypes();
+            this.EmbeddedType = EmbeddedType.None;
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HalJsonMediaTypeFormatter" /> class.
+        /// </summary>
+        /// <param name="embeddedType">
+        /// <see cref="EmbeddedType" /> value to be used during the serialisation.
+        /// </param>
+        public HalJsonMediaTypeFormatter(EmbeddedType embeddedType)
+        {
+            this.SetSupportedMediaTypes();
+            this.EmbeddedType = embeddedType;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="EmbeddedType" /> value to be used during the serialisation.
+        /// </summary>
+        /// <remarks>
+        /// This value is ignored, if object to serialise inherits <see cref="LinkedResourceCollection{T}" />.
+        /// </remarks>
+        public EmbeddedType EmbeddedType { get; set; }
+
+        /// <summary>
+        /// Determines whether the <see cref="HalJsonMediaTypeFormatter" /> can read objects of the specified type.
+        /// </summary>
+        /// <param name="type">The type of object that will be read.</param>
+        /// <returns>
+        /// Returns <c>True</c>, if objects of this type can be read, otherwise returns <c>False</c>.
+        /// </returns>
         public override bool CanReadType(Type type)
         {
             var isSupportedType = IsSupportedType(type);
             return isSupportedType;
         }
 
+        /// <summary>
+        /// Determines whether the <see cref="HalJsonMediaTypeFormatter" /> can write objects of the specified type.
+        /// </summary>
+        /// <param name="type">The type of object that will be written.</param>
+        /// <returns>
+        /// Returns <c>True</c>, if objects of this type can be written, otherwise returns <c>False</c>.
+        /// </returns>
         public override bool CanWriteType(Type type)
         {
             var isSupportedType = IsSupportedType(type);
             return isSupportedType;
         }
 
+        /// <summary>
+        /// Called during serialization to write an object of the specified type to the specified stream.
+        /// </summary>
+        /// <param name="type">The type of the object to write.</param>
+        /// <param name="value">The object to write.</param>
+        /// <param name="writeStream">The stream to write to.</param>
+        /// <param name="effectiveEncoding">The encoding to use when writing.</param>
         public override void WriteToStream(Type type, object value, Stream writeStream, Encoding effectiveEncoding)
         {
             //base.WriteToStream(type, value, writeStream, effectiveEncoding);
 
+            var embedded = value;
+            if (this.UseEmbeddedKey(type))
+            {
+                embedded = new { _embedded = value };
+            }
+
             var formatting = this.Indent ? Formatting.Indented : Formatting.None;
             var so = this.SerializerSettings == null
-                ? JsonConvert.SerializeObject(value, formatting)
-                : JsonConvert.SerializeObject(value, formatting, this.SerializerSettings);
+                ? JsonConvert.SerializeObject(embedded, formatting)
+                : JsonConvert.SerializeObject(embedded, formatting, this.SerializerSettings);
 
             var jo = JObject.Parse(so);
 
@@ -47,7 +101,9 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return;
             }
 
-            var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, new { href = p.Href })).ToList();
+            var links = resource.Links
+                                .Select(p => new KeyValuePair<string, object>(p.Rel, p))
+                                .ToList();
             var sb = new StringBuilder();
             sb.Append("{");
             for (var i = 0; i < links.Count; i++)
@@ -63,24 +119,12 @@ namespace Aliencube.WebApi.Hal.Formatters
             var jlo = JObject.Parse(sb.ToString());
             jo["_links"] = jlo;
 
-            var sw = new StreamWriter(writeStream);
+            var sw = new StreamWriter(writeStream, effectiveEncoding);
             var writer = new JsonTextWriter(sw);
             jo.WriteTo(writer);
             writer.Flush();
             sw.Flush();
         }
-
-        //public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content,
-        //    TransportContext transportContext)
-        //{
-        //    return base.WriteToStreamAsync(type, value, writeStream, content, transportContext);
-        //}
-
-        //public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content,
-        //    TransportContext transportContext, CancellationToken cancellationToken)
-        //{
-        //    return base.WriteToStreamAsync(type, value, writeStream, content, transportContext, cancellationToken);
-        //}
 
         private void SetSupportedMediaTypes()
         {
@@ -88,6 +132,11 @@ namespace Aliencube.WebApi.Hal.Formatters
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
+        }
+
+        private bool UseEmbeddedKey(Type type)
+        {
+            return this.EmbeddedType == EmbeddedType.Embedded || IsLinkedResourceCollectionType(type);
         }
 
         private static bool IsSupportedType(Type type)
