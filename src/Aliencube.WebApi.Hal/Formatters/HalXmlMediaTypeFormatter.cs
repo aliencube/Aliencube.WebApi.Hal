@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using Aliencube.WebApi.Hal.Extensions;
 using Aliencube.WebApi.Hal.Helpers;
 using Aliencube.WebApi.Hal.Resources;
 
@@ -94,11 +95,11 @@ namespace Aliencube.WebApi.Hal.Formatters
             {
                 if (string.IsNullOrWhiteSpace(this.Namespace))
                 {
-                    writer.WriteStartElement("Resource");
+                    writer.WriteStartElement("resource");
                 }
                 else
                 {
-                    writer.WriteStartElement("Resource", this.Namespace);
+                    writer.WriteStartElement("resource", this.Namespace);
                 }
 
                 SerialiseAttributes(writer, resource);
@@ -147,7 +148,7 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private static void SerialiseInnerResource(XmlWriter writer, LinkedResource resource)
         {
-            writer.WriteStartElement("Resource");
+            writer.WriteStartElement("resource");
 
             SerialiseAttributes(writer, resource);
             SerialiseLinks(writer, resource.Links);
@@ -167,7 +168,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         {
             foreach (var link in links)
             {
-                writer.WriteStartElement("Link");
+                writer.WriteStartElement("link");
                 writer.WriteAttributeString("rel", link.Rel);
                 writer.WriteAttributeString("href", link.Href);
                 writer.WriteEndElement();
@@ -181,7 +182,7 @@ namespace Aliencube.WebApi.Hal.Formatters
                 var propertyValue = property.GetValue(resource);
                 if (property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
                 {
-                    writer.WriteElementString(property.Name, propertyValue.ToString());
+                    writer.WriteElementString(property.Name.ToCamelCase(), propertyValue.ToString());
                 }
                 else
                 {

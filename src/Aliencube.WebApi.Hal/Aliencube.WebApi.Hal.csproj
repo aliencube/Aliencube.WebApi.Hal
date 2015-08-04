@@ -52,6 +52,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Extensions\LinkedResourceExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Formatters\EmbeddedType.cs" />
     <Compile Include="Formatters\HalJsonMediaTypeFormatter.cs" />
     <Compile Include="Formatters\HalXmlMediaTypeFormatter.cs" />
