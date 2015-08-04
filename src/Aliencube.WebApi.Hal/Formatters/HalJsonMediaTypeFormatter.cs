@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
+using Aliencube.WebApi.Hal.Helpers;
 using Aliencube.WebApi.Hal.Resources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -32,8 +33,8 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <see cref="EmbeddedType" /> value to be used during the serialisation.
         /// </param>
         public HalJsonMediaTypeFormatter(EmbeddedType embeddedType)
+            : this()
         {
-            this.SetSupportedMediaTypes();
             this.EmbeddedType = embeddedType;
         }
 
@@ -54,7 +55,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// </returns>
         public override bool CanReadType(Type type)
         {
-            var isSupportedType = IsSupportedType(type);
+            var isSupportedType = FormatterHelper.IsSupportedType(type);
             return isSupportedType;
         }
 
@@ -67,7 +68,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// </returns>
         public override bool CanWriteType(Type type)
         {
-            var isSupportedType = IsSupportedType(type);
+            var isSupportedType = FormatterHelper.IsSupportedType(type);
             return isSupportedType;
         }
 
@@ -80,7 +81,11 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <param name="effectiveEncoding">The encoding to use when writing.</param>
         public override void WriteToStream(Type type, object value, Stream writeStream, Encoding effectiveEncoding)
         {
-            //base.WriteToStream(type, value, writeStream, effectiveEncoding);
+            var resource = value as LinkedResource;
+            if (resource == null)
+            {
+                return;
+            }
 
             var embedded = value;
             if (this.UseEmbeddedKey(type))
@@ -88,35 +93,11 @@ namespace Aliencube.WebApi.Hal.Formatters
                 embedded = new { _embedded = value };
             }
 
-            var formatting = this.Indent ? Formatting.Indented : Formatting.None;
-            var so = this.SerializerSettings == null
-                ? JsonConvert.SerializeObject(embedded, formatting)
-                : JsonConvert.SerializeObject(embedded, formatting, this.SerializerSettings);
+            var jo = this.SerialiseResource(embedded);
 
-            var jo = JObject.Parse(so);
+            var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, p)).ToList();
+            var jlo = SerialiseLinks(links);
 
-            var resource = value as LinkedResource;
-            if (resource == null)
-            {
-                return;
-            }
-
-            var links = resource.Links
-                                .Select(p => new KeyValuePair<string, object>(p.Rel, p))
-                                .ToList();
-            var sb = new StringBuilder();
-            sb.Append("{");
-            for (var i = 0; i < links.Count; i++)
-            {
-                var link = links[i];
-                sb.AppendFormat("\"{0}\": {1}{2}",
-                                link.Key,
-                                JsonConvert.SerializeObject(link.Value),
-                                i == links.Count - 1 ? "" : ",");
-            }
-            sb.Append("}");
-
-            var jlo = JObject.Parse(sb.ToString());
             jo["_links"] = jlo;
 
             var sw = new StreamWriter(writeStream, effectiveEncoding);
@@ -136,37 +117,36 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private bool UseEmbeddedKey(Type type)
         {
-            return this.EmbeddedType == EmbeddedType.Embedded || IsLinkedResourceCollectionType(type);
+            return this.EmbeddedType == EmbeddedType.Embedded || FormatterHelper.IsLinkedResourceCollectionType(type);
         }
 
-        private static bool IsSupportedType(Type type)
+        private JObject SerialiseResource(object embedded)
         {
-            var isLinkedResourceType = IsLinkedResourceType(type);
-            var isLinkedResourceCollectionType = IsLinkedResourceCollectionType(type);
+            var formatting = this.Indent ? Formatting.Indented : Formatting.None;
+            var so = this.SerializerSettings == null
+                ? JsonConvert.SerializeObject(embedded, formatting)
+                : JsonConvert.SerializeObject(embedded, formatting, this.SerializerSettings);
 
-            return isLinkedResourceType || isLinkedResourceCollectionType;
+            var jo = JObject.Parse(so);
+            return jo;
         }
 
-        private static bool IsLinkedResourceType(Type type)
+        private static JObject SerialiseLinks(List<KeyValuePair<string, object>> links)
         {
-            return type.IsSubclassOf(typeof(LinkedResource));
-        }
-
-        private static bool IsLinkedResourceCollectionType(Type type)
-        {
-            var typeToCheck = type;
-            while (typeToCheck != null && typeToCheck != typeof(object))
+            var sb = new StringBuilder();
+            sb.Append("{");
+            for (var i = 0; i < links.Count; i++)
             {
-                var currentType = typeToCheck.IsGenericType ? typeToCheck.GetGenericTypeDefinition() : typeToCheck;
-                if (currentType == typeof(LinkedResourceCollection<>))
-                {
-                    return true;
-                }
-
-                typeToCheck = typeToCheck.BaseType;
+                var link = links[i];
+                sb.AppendFormat("\"{0}\": {1}{2}",
+                                link.Key,
+                                JsonConvert.SerializeObject(link.Value),
+                                i == links.Count - 1 ? "" : ",");
             }
+            sb.Append("}");
 
-            return false;
+            var jlo = JObject.Parse(sb.ToString());
+            return jlo;
         }
     }
 }
