@@ -103,6 +103,7 @@ namespace Aliencube.WebApi.Hal.Formatters
                 }
 
                 SerialiseAttributes(writer, resource);
+                SerialiseLinks(writer, resource.Links);
                 SerialiseResources(writer, type, resource);
 
                 writer.WriteEndElement();
@@ -166,7 +167,7 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private static void SerialiseLinks(XmlWriter writer, IEnumerable<Link> links)
         {
-            foreach (var link in links)
+            foreach (var link in links.Where(p => !p.Rel.Equals("self", StringComparison.InvariantCultureIgnoreCase)))
             {
                 writer.WriteStartElement("link");
                 writer.WriteAttributeString("rel", link.Rel);

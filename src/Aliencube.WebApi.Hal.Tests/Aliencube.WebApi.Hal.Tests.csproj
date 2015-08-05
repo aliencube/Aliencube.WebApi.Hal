@@ -83,6 +83,7 @@
     <Compile Include="..\..\docs\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="HalXmlMediaTypeFormatterTest.cs" />
     <Compile Include="HalJsonMediaTypeFormatterTest.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Helpers\ProductHelper.cs" />
