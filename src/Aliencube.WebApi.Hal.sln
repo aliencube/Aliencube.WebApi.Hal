@@ -5,6 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{5A454BA0-FEFA-42DD-984E-3DD77EA4A384}"
 	ProjectSection(SolutionItems) = preProject
+		Settings.StyleCop = Settings.StyleCop
 		..\docs\SharedAssemblyInfo.cs = ..\docs\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
