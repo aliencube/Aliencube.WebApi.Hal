@@ -5,15 +5,17 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
+
 using Aliencube.WebApi.Hal.Helpers;
 using Aliencube.WebApi.Hal.Resources;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Aliencube.WebApi.Hal.Formatters
 {
     /// <summary>
-    /// This repressents the formatter entity to support JSON response format with HAL.
+    /// This represents the formatter entity to support JSON response format with HAL.
     /// </summary>
     public class HalJsonMediaTypeFormatter : JsonMediaTypeFormatter
     {
@@ -107,6 +109,26 @@ namespace Aliencube.WebApi.Hal.Formatters
             sw.Flush();
         }
 
+        private static JObject SerialiseLinks(List<KeyValuePair<string, object>> links)
+        {
+            var sb = new StringBuilder();
+            sb.Append("{");
+            for (var i = 0; i < links.Count; i++)
+            {
+                var link = links[i];
+                sb.AppendFormat(
+                                "\"{0}\": {1}{2}",
+                                link.Key,
+                                JsonConvert.SerializeObject(link.Value),
+                                i == links.Count - 1 ? string.Empty : ",");
+            }
+
+            sb.Append("}");
+
+            var jlo = JObject.Parse(sb.ToString());
+            return jlo;
+        }
+
         private void SetSupportedMediaTypes()
         {
             this.SupportedMediaTypes.Clear();
@@ -129,24 +151,6 @@ namespace Aliencube.WebApi.Hal.Formatters
 
             var jo = JObject.Parse(so);
             return jo;
-        }
-
-        private static JObject SerialiseLinks(List<KeyValuePair<string, object>> links)
-        {
-            var sb = new StringBuilder();
-            sb.Append("{");
-            for (var i = 0; i < links.Count; i++)
-            {
-                var link = links[i];
-                sb.AppendFormat("\"{0}\": {1}{2}",
-                                link.Key,
-                                JsonConvert.SerializeObject(link.Value),
-                                i == links.Count - 1 ? "" : ",");
-            }
-            sb.Append("}");
-
-            var jlo = JObject.Parse(sb.ToString());
-            return jlo;
         }
     }
 }
