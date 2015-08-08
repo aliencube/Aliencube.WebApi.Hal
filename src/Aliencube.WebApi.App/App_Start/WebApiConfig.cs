@@ -47,7 +47,7 @@ namespace Aliencube.WebApi.App
                                       Namespace = "http://aliencube.org/schema/2015/08/sample"
                                   });
 
-            //builder.UseWebApi(config);
+            builder.UseWebApi(config);
         }
     }
 }
