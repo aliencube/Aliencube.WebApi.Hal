@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Configuration;
+using System.Web.Http;
 
 using Aliencube.WebApi.Hal.Formatters;
 
@@ -20,10 +22,27 @@ namespace Aliencube.WebApi.App
         /// <summary>
         /// Configures the Web API.
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="container"></param>
+        /// <param name="builder">
+        /// The <see cref="IAppBuilder" /> instance.
+        /// </param>
+        /// <param name="container">
+        /// The <see cref="IContainer" /> instance.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Throws when either <c>builder</c> or <c>container</c> is null.
+        /// </exception>
         public static void Configure(IAppBuilder builder, IContainer container)
         {
+            if (builder == null)
+            {
+                throw new ArgumentNullException("builder");
+            }
+
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
             var config = new HttpConfiguration()
                          {
                              DependencyResolver = new AutofacWebApiDependencyResolver(container),
@@ -33,19 +52,22 @@ namespace Aliencube.WebApi.App
             config.MapHttpAttributeRoutes();
 
             // Formatters
-            config.Formatters.Clear();
-            config.Formatters.Add(new HalJsonMediaTypeFormatter()
-                                  {
-                                      SerializerSettings = new JsonSerializerSettings()
-                                                           {
-                                                               ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                                               MissingMemberHandling = MissingMemberHandling.Ignore,
-                                                           },
-                                  });
-            config.Formatters.Add(new HalXmlMediaTypeFormatter()
-                                  {
-                                      Namespace = "http://aliencube.org/schema/2015/08/sample"
-                                  });
+            var jsonFormatter = new HalJsonMediaTypeFormatter()
+                                    {
+                                        SerializerSettings = new JsonSerializerSettings()
+                                                                 {
+                                                                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                                                                     MissingMemberHandling = MissingMemberHandling.Ignore,
+                                                                 },
+                                    };
+            var xmlFormatter = new HalXmlMediaTypeFormatter()
+                                   {
+                                       Namespace = "http://schema.aliencube.org/xml/2015/08/sample",
+                                   };
+            config.Formatters.Remove(config.Formatters.JsonFormatter);
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            config.Formatters.Insert(0, jsonFormatter);
+            config.Formatters.Insert(1, xmlFormatter);
 
             builder.UseWebApi(config);
         }

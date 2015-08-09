@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Web.Http;
-
-using Autofac.Integration.WebApi;
 
 using Owin;
 
@@ -15,7 +12,12 @@ namespace Aliencube.WebApi.App
         /// <summary>
         /// Configures the OWIN pipeline.
         /// </summary>
-        /// <param name="appBuilder">The app builder</param>
+        /// <param name="appBuilder">
+        /// The <see cref="IAppBuilder" /> instance.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Throws when <c>appBuilder</c> is null.
+        /// </exception>
         public void Configuration(IAppBuilder appBuilder)
         {
             if (appBuilder == null)

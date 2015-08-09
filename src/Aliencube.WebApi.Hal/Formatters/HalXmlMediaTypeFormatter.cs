@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+
 using Aliencube.WebApi.Hal.Extensions;
 using Aliencube.WebApi.Hal.Helpers;
 using Aliencube.WebApi.Hal.Resources;
@@ -16,7 +17,7 @@ using Aliencube.WebApi.Hal.Resources;
 namespace Aliencube.WebApi.Hal.Formatters
 {
     /// <summary>
-    /// This repressents the formatter entity to support XML response format with HAL.
+    /// This represents the formatter entity to support XML response format with HAL.
     /// </summary>
     public class HalXmlMediaTypeFormatter : BufferedMediaTypeFormatter
     {
@@ -31,11 +32,11 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Initialises a new instance of the <see cref="HalXmlMediaTypeFormatter" /> class.
         /// </summary>
-        /// <param name="namespace">Default namespace.</param>
-        public HalXmlMediaTypeFormatter(string @namespace)
+        /// <param name="ns">Default namespace.</param>
+        public HalXmlMediaTypeFormatter(string ns)
             : this()
         {
-            this.Namespace = @namespace;
+            this.Namespace = ns;
         }
 
         /// <summary>
@@ -109,14 +110,6 @@ namespace Aliencube.WebApi.Hal.Formatters
                 writer.WriteEndElement();
                 writer.Flush();
             }
-        }
-
-        private void SetSupportedMediaTypes()
-        {
-            this.SupportedMediaTypes.Clear();
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+xml"));
         }
 
         private static void SerialiseAttributes(XmlWriter writer, LinkedResource resource)
@@ -194,6 +187,14 @@ namespace Aliencube.WebApi.Hal.Formatters
                     }
                 }
             }
+        }
+
+        private void SetSupportedMediaTypes()
+        {
+            this.SupportedMediaTypes.Clear();
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+xml"));
         }
     }
 }

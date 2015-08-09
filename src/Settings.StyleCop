@@ -1,6 +1,8 @@
 <StyleCopSettings Version="105">
     <GlobalSettings>
-        <CollectionProperty Name="RecognizedWords" />
+        <CollectionProperty Name="RecognizedWords">
+            <Value>startup</Value>
+        </CollectionProperty>
         <StringProperty Name="Culture">en-GB</StringProperty>
     </GlobalSettings>
     <Analyzers>

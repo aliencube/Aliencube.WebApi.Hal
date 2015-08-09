@@ -11,7 +11,7 @@ namespace Aliencube.WebApi.App
     public static class DependencyConfig
     {
         /// <summary>
-        /// Configures Autofac dependency injection.
+        /// Configures <see cref="Autofac" /> dependency injection.
         /// </summary>
         /// <returns>Returns <see cref="IContainer" /> instance.</returns>
         public static IContainer Configure()
