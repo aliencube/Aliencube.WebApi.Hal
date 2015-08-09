@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Aliencube.WebApi.Hal.Resources;
 
 namespace Aliencube.WebApi.Hal.Tests.Models
@@ -9,7 +10,7 @@ namespace Aliencube.WebApi.Hal.Tests.Models
     public class Products : LinkedResourceCollection<Product>
     {
         /// <summary>
-        /// Initialise a new instance of the <see cref="Products" /> class.
+        /// Initialises a new instance of the <see cref="Products" /> class.
         /// </summary>
         public Products()
             : base()
@@ -17,7 +18,7 @@ namespace Aliencube.WebApi.Hal.Tests.Models
         }
 
         /// <summary>
-        /// Initialise a new instance of the <see cref="Products" /> class.
+        /// Initialises a new instance of the <see cref="Products" /> class.
         /// </summary>
         /// <param name="items">List of <see cref="Product" /> objects.</param>
         public Products(List<Product> items)

@@ -20,7 +20,7 @@ namespace Aliencube.WebApi.Hal.Resources
         public string Href { get; set; }
 
         /// <summary>
-        /// Gets the value that identifies whether the <c>Href</c> is templated URI or not.
+        /// Gets a value indicating whether whether the <c>Href</c> is templated URI or not.
         /// </summary>
         [JsonProperty(PropertyName = "templated")]
         public bool IsHrefTemplated

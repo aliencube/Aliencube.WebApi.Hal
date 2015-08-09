@@ -1,21 +1,31 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+
 using Aliencube.WebApi.Hal.Formatters;
 using Aliencube.WebApi.Hal.Tests.Helpers;
 using Aliencube.WebApi.Hal.Tests.Models;
+
 using FluentAssertions;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
 using NUnit.Framework;
 
 namespace Aliencube.WebApi.Hal.Tests
 {
+    /// <summary>
+    /// This represents the test entity for the <see cref="HalJsonMediaTypeFormatter" /> class.
+    /// </summary>
     [TestFixture]
     public class HalJsonMediaTypeFormatterTest
     {
         private HalJsonMediaTypeFormatter _formatter;
 
+        /// <summary>
+        /// Initialises resources for the test class.
+        /// </summary>
         [SetUp]
         public void Init()
         {
@@ -29,11 +39,17 @@ namespace Aliencube.WebApi.Hal.Tests
                               };
         }
 
+        /// <summary>
+        /// Releases all resources.
+        /// </summary>
         [TearDown]
         public void Cleanup()
         {
         }
 
+        /// <summary>
+        /// Tests whether the given type can be read or not.
+        /// </summary>
         [Test]
         public void GivenTypeShouldBeAbleToRead()
         {
@@ -48,6 +64,9 @@ namespace Aliencube.WebApi.Hal.Tests
             result.Should().BeTrue();
         }
 
+        /// <summary>
+        /// Tests whether the given type can be written or not.
+        /// </summary>
         [Test]
         public void GivenTypeShouldBeAbleToWrite()
         {
@@ -62,6 +81,9 @@ namespace Aliencube.WebApi.Hal.Tests
             result.Should().BeTrue();
         }
 
+        /// <summary>
+        /// Tests whether the given product returns JSON objects formatted in HAL.
+        /// </summary>
         [Test]
         public void GivenProductShouldReturnHalJsonObject()
         {
@@ -75,11 +97,11 @@ namespace Aliencube.WebApi.Hal.Tests
                 var links = jo.SelectToken("_links");
                 links.Should().NotBeNullOrEmpty();
 
+                var self = links.SelectToken("self");
+                self.Should().NotBeNullOrEmpty();
+
                 var embedded = jo.SelectToken("_embedded");
                 embedded.Should().BeNullOrEmpty();
-
-                var rel = jo.SelectToken("rel");
-                rel.Should().BeNullOrEmpty();
 
                 var href = jo.SelectToken("href");
                 href.Should().BeNullOrEmpty();
@@ -95,17 +117,20 @@ namespace Aliencube.WebApi.Hal.Tests
                 var links = jo.SelectToken("_links");
                 links.Should().NotBeNullOrEmpty();
 
+                var self = links.SelectToken("self");
+                self.Should().NotBeNullOrEmpty();
+
                 var embedded = jo.SelectToken("_embedded");
                 embedded.Should().NotBeNullOrEmpty();
-
-                var rel = jo.SelectToken("rel");
-                rel.Should().BeNullOrEmpty();
 
                 var href = jo.SelectToken("href");
                 href.Should().BeNullOrEmpty();
             }
         }
 
+        /// <summary>
+        /// Tests whether the given products returns JSON objects formatted in HAL.
+        /// </summary>
         [Test]
         public void GivenProductsShouldReturnHalJsonObject()
         {
@@ -119,12 +144,12 @@ namespace Aliencube.WebApi.Hal.Tests
                 var links = jo.SelectToken("_links");
                 links.Should().NotBeNullOrEmpty();
 
+                var self = links.SelectToken("self");
+                self.Should().NotBeNullOrEmpty();
+
                 var embedded = jo.SelectToken("_embedded");
                 embedded.Should().NotBeNullOrEmpty();
                 embedded.Count().Should().Be(2);
-
-                var rel = jo.SelectToken("rel");
-                rel.Should().BeNullOrEmpty();
 
                 var href = jo.SelectToken("href");
                 href.Should().BeNullOrEmpty();

@@ -97,7 +97,9 @@ namespace Aliencube.WebApi.Hal.Formatters
 
             var jo = this.SerialiseResource(embedded);
 
-            var links = resource.Links.Select(p => new KeyValuePair<string, object>(p.Rel, p)).ToList();
+            var links = resource.Links.Select(p => new KeyValuePair<string, Link>(p.Rel, p)).ToList();
+            SetSelfLink(resource, links);
+
             var jlo = SerialiseLinks(links);
 
             jo["_links"] = jlo;
@@ -109,7 +111,22 @@ namespace Aliencube.WebApi.Hal.Formatters
             sw.Flush();
         }
 
-        private static JObject SerialiseLinks(List<KeyValuePair<string, object>> links)
+        private static void SetSelfLink(LinkedResource resource, IList<KeyValuePair<string, Link>> links)
+        {
+            if (string.IsNullOrWhiteSpace(resource.Href))
+            {
+                return;
+            }
+
+            if (links.Any(p => p.Key.Equals("self", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return;
+            }
+
+            links.Insert(0, new KeyValuePair<string, Link>("self", new Link() { Rel = "self", Href = resource.Href }));
+        }
+
+        private static JObject SerialiseLinks(IReadOnlyList<KeyValuePair<string, Link>> links)
         {
             var sb = new StringBuilder();
             sb.Append("{");
@@ -131,8 +148,6 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private void SetSupportedMediaTypes()
         {
-            this.SupportedMediaTypes.Clear();
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
         }

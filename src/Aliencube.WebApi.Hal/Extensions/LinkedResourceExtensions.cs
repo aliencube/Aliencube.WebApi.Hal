@@ -24,14 +24,6 @@ namespace Aliencube.WebApi.Hal.Extensions
             }
 
             resource.Links.Add(link);
-
-            if (!link.Rel.Equals("self", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return resource;
-            }
-
-            resource.Rel = link.Rel;
-            resource.Href = link.Href;
             return resource;
         }
 
@@ -49,16 +41,6 @@ namespace Aliencube.WebApi.Hal.Extensions
             }
 
             resource.Links.AddRange(links);
-
-            var link = links.SingleOrDefault(p => p.Rel.Equals("href", StringComparison.InvariantCultureIgnoreCase));
-            if (link == null)
-            {
-                return resource;
-            }
-
-            resource.Rel = link.Rel;
-            resource.Href = link.Href;
-
             return resource;
         }
     }

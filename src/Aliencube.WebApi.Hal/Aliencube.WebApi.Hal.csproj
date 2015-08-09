@@ -55,7 +55,6 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Formatters\EmbeddedType.cs" />
     <Compile Include="Formatters\HalJsonMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\HalXmlMediaTypeFormatter.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Link.cs" />

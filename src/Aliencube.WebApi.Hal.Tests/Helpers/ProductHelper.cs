@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Aliencube.WebApi.Hal.Extensions;
 using Aliencube.WebApi.Hal.Resources;
 using Aliencube.WebApi.Hal.Tests.Models;
@@ -22,13 +23,11 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
                               ProductId = productId,
                               Name = string.Format("Product{0}", productId),
                               Description = string.Format("Product Description {0}", productId),
-                              Rel = "self",
                               Href = string.Format("/products/{0}", productId),
                           };
 
             var links = new List<Link>()
                         {
-                            new Link() { Rel = "self", Href = string.Format("/products/{0}", productId) },
                             new Link() { Rel = "find", Href = "/products{?id}" },
                             new Link() { Rel = "rel", Href = "/products" },
                         };

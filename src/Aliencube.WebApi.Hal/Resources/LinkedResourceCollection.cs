@@ -7,7 +7,7 @@ namespace Aliencube.WebApi.Hal.Resources
     /// <summary>
     /// This represents the collection entity for objects inheriting the <see cref="LinkedResource" /> class.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type that inherits <see cref="LinkedResource" /> class.</typeparam>
     public class LinkedResourceCollection<T> : LinkedResource, ICollection<T> where T : LinkedResource
     {
         private readonly List<T> _items;
@@ -71,7 +71,7 @@ namespace Aliencube.WebApi.Hal.Resources
         /// <summary>
         /// Adds an item to the collection.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Item to add.</param>
         public void Add(T item)
         {
             this._items.Add(item);
@@ -88,8 +88,8 @@ namespace Aliencube.WebApi.Hal.Resources
         /// <summary>
         /// Determines whether the collection contains a specific item or not.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">Item to check.</param>
+        /// <returns>Returns <c>True</c>, if the collection contains the item; otherwise returns <c>False</c>.</returns>
         public bool Contains(T item)
         {
             var result = this._items.Contains(item);

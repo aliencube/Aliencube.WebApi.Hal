@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
 
 using Aliencube.WebApi.App.Models;
@@ -31,12 +30,12 @@ namespace Aliencube.WebApi.App.Controllers
                 throw new ArgumentNullException("name");
             }
 
-            var ping = new Ping() { Message = string.Format("Hello, {0}", name) };
-            ping.AddLinks(new List<Link>()
-                              {
-                                  new Link() { Rel = "self", Href = string.Format("/ping/{0}", name) },
-                                  new Link() { Rel = "rel", Href = "/pings/{message}" }
-                              });
+            var ping = new Ping()
+                           {
+                               Message = string.Format("Hello, {0}", name),
+                               Href = string.Format("/ping/{0}", name),
+                           };
+            ping.AddLink(new Link() { Rel = "rel", Href = "/pings/{message}" });
 
             return ping;
         }

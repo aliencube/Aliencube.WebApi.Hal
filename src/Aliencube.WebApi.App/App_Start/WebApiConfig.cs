@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Web.Http;
 
 using Aliencube.WebApi.Hal.Formatters;
@@ -60,14 +59,14 @@ namespace Aliencube.WebApi.App
                                                                      MissingMemberHandling = MissingMemberHandling.Ignore,
                                                                  },
                                     };
-            var xmlFormatter = new HalXmlMediaTypeFormatter()
-                                   {
-                                       Namespace = "http://schema.aliencube.org/xml/2015/08/sample",
-                                   };
+            //var xmlFormatter = new HalXmlMediaTypeFormatter()
+            //                       {
+            //                           Namespace = "http://schema.aliencube.org/xml/2015/08/sample",
+            //                       };
             config.Formatters.Remove(config.Formatters.JsonFormatter);
-            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            //config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.Formatters.Insert(0, jsonFormatter);
-            config.Formatters.Insert(1, xmlFormatter);
+            //config.Formatters.Insert(1, xmlFormatter);
 
             builder.UseWebApi(config);
         }
