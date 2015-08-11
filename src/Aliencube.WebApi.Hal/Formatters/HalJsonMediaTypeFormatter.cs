@@ -148,7 +148,6 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private void SetSupportedMediaTypes()
         {
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
         }
 
