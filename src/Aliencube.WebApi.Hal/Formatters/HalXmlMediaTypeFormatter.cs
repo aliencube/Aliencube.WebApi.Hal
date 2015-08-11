@@ -103,7 +103,7 @@ namespace Aliencube.WebApi.Hal.Formatters
                     writer.WriteStartElement("resource", this.Namespace);
                 }
 
-                SerialiseAttributes(writer, resource);
+                SetSelfLink(resource);
                 SerialiseLinks(writer, resource.Links);
                 SerialiseResources(writer, type, resource);
 
@@ -112,27 +112,34 @@ namespace Aliencube.WebApi.Hal.Formatters
             }
         }
 
-        private static void SerialiseAttributes(XmlWriter writer, LinkedResource resource)
+        private static void SetSelfLink(LinkedResource resource)
         {
-            if (!string.IsNullOrWhiteSpace(resource.Rel))
+            if (string.IsNullOrWhiteSpace(resource.Href))
             {
-                writer.WriteAttributeString("rel", resource.Rel);
+                return;
             }
 
-            if (!string.IsNullOrWhiteSpace(resource.Href))
+            var links = resource.Links;
+            if (links.Any(p => p.Rel.Equals("self", StringComparison.InvariantCultureIgnoreCase)))
             {
-                writer.WriteAttributeString("href", resource.Href);
+                return;
             }
+
+            resource.Links.Insert(0, new Link() { Rel = "self", Href = resource.Href });
         }
 
         private static void SerialiseResources(XmlWriter writer, Type type, LinkedResource resource)
         {
             if (FormatterHelper.IsLinkedResourceCollectionType(type))
             {
+                writer.WriteStartElement("resources");
+
                 foreach (LinkedResource innerResource in (IEnumerable)resource)
                 {
                     SerialiseInnerResource(writer, innerResource);
                 }
+
+                writer.WriteEndElement();
             }
             else
             {
@@ -144,14 +151,13 @@ namespace Aliencube.WebApi.Hal.Formatters
         {
             writer.WriteStartElement("resource");
 
-            SerialiseAttributes(writer, resource);
+            SetSelfLink(resource);
             SerialiseLinks(writer, resource.Links);
 
             var properties = resource.GetType()
                                      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                      .Where(p => !p.Name.Equals("rel", StringComparison.InvariantCultureIgnoreCase) &&
-                                                 !p.Name.Equals("href", StringComparison.InvariantCultureIgnoreCase) &&
-                                                 !p.Name.Equals("links", StringComparison.InvariantCultureIgnoreCase));
+                                                 !p.Name.Equals("href", StringComparison.InvariantCultureIgnoreCase));
 
             SerialiseProperties(writer, resource, properties);
 
@@ -160,16 +166,27 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         private static void SerialiseLinks(XmlWriter writer, IEnumerable<Link> links)
         {
-            foreach (var link in links.Where(p => !p.Rel.Equals("self", StringComparison.InvariantCultureIgnoreCase)))
+            writer.WriteStartElement("links");
+
+            foreach (var link in links)
             {
                 writer.WriteStartElement("link");
-                writer.WriteAttributeString("rel", link.Rel);
-                writer.WriteAttributeString("href", link.Href);
+
+                writer.WriteElementString("rel", link.Rel);
+                writer.WriteElementString("href", link.Href);
+
+                if (link.Href.Contains("{") && link.Href.Contains("}"))
+                {
+                    writer.WriteElementString("templated", true.ToString().ToLowerInvariant());
+                }
+
                 writer.WriteEndElement();
             }
+
+            writer.WriteEndElement();
         }
 
-        private static void SerialiseProperties(XmlWriter writer, LinkedResource resource, IEnumerable<PropertyInfo> properties)
+        private static void SerialiseProperties<T>(XmlWriter writer, T resource, IEnumerable<PropertyInfo> properties)
         {
             foreach (var property in properties)
             {
@@ -192,8 +209,8 @@ namespace Aliencube.WebApi.Hal.Formatters
         private void SetSupportedMediaTypes()
         {
             this.SupportedMediaTypes.Clear();
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+xml"));
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 
+using Aliencube.WebApi.Hal.Configs;
 using Aliencube.WebApi.Hal.Formatters;
 
 using Autofac;
@@ -51,22 +52,7 @@ namespace Aliencube.WebApi.App
             config.MapHttpAttributeRoutes();
 
             // Formatters
-            var jsonFormatter = new HalJsonMediaTypeFormatter()
-                                    {
-                                        SerializerSettings = new JsonSerializerSettings()
-                                                                 {
-                                                                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                                                     MissingMemberHandling = MissingMemberHandling.Ignore,
-                                                                 },
-                                    };
-            //var xmlFormatter = new HalXmlMediaTypeFormatter()
-            //                       {
-            //                           Namespace = "http://schema.aliencube.org/xml/2015/08/sample",
-            //                       };
-            config.Formatters.Remove(config.Formatters.JsonFormatter);
-            //config.Formatters.Remove(config.Formatters.XmlFormatter);
-            config.Formatters.Insert(0, jsonFormatter);
-            //config.Formatters.Insert(1, xmlFormatter);
+            config.ConfigHalFormatter();
 
             builder.UseWebApi(config);
         }
