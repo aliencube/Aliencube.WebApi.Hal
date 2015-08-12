@@ -14,11 +14,17 @@ using NUnit.Framework;
 
 namespace Aliencube.WebApi.Hal.Tests
 {
+    /// <summary>
+    /// This represents the test entity for the <see cref="HalXmlMediaTypeFormatter" /> class.
+    /// </summary>
     [TestFixture]
     public class HalXmlMediaTypeFormatterTest
     {
         private HalXmlMediaTypeFormatter _formatter;
 
+        /// <summary>
+        /// Initialises resources for the test class.
+        /// </summary>
         [SetUp]
         public void Init()
         {
@@ -28,11 +34,17 @@ namespace Aliencube.WebApi.Hal.Tests
                               };
         }
 
+        /// <summary>
+        /// Releases all resources.
+        /// </summary>
         [TearDown]
         public void Cleanup()
         {
         }
 
+        /// <summary>
+        /// Tests whether the given type can be read or not.
+        /// </summary>
         [Test]
         public void GivenTypeShouldBeAbleToRead()
         {
@@ -47,6 +59,9 @@ namespace Aliencube.WebApi.Hal.Tests
             result.Should().BeTrue();
         }
 
+        /// <summary>
+        /// Tests whether the given type can be written or not.
+        /// </summary>
         [Test]
         public void GivenTypeShouldBeAbleToWrite()
         {
@@ -61,6 +76,9 @@ namespace Aliencube.WebApi.Hal.Tests
             result.Should().BeTrue();
         }
 
+        /// <summary>
+        /// Tests whether the given product returns XML objects formatted in HAL.
+        /// </summary>
         [Test]
         public void GivenProductShouldReturnHalXmlObject()
         {
@@ -81,15 +99,13 @@ namespace Aliencube.WebApi.Hal.Tests
             links.Should().NotBeNull();
             links.Elements().Count().Should().BeGreaterOrEqualTo(1);
 
-            var resource = root.Elements()
-                               .SingleOrDefault(p => p.Name.LocalName.Equals("resource", StringComparison.InvariantCultureIgnoreCase));
             var names = product.GetType()
                                .GetProperties()
                                .Where(pi => pi.Name != "Links" && pi.Name != "Rel" && pi.Name != "Href")
                                .Select(pi => pi.Name.ToCamelCase());
             foreach (var name in names)
             {
-                var element = resource.Elements()
+                var element = root.Elements()
                                       .SingleOrDefault(p => p.Name.LocalName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 element.Should().NotBeNull();
             }
