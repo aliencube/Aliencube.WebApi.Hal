@@ -128,6 +128,28 @@ namespace Aliencube.WebApi.Hal.Formatters
             resource.Links.Insert(0, new Link() { Rel = "self", Href = resource.Href });
         }
 
+        private static void SerialiseLinks(XmlWriter writer, IEnumerable<Link> links)
+        {
+            writer.WriteStartElement("links");
+
+            foreach (var link in links)
+            {
+                writer.WriteStartElement("link");
+
+                writer.WriteElementString("rel", link.Rel);
+                writer.WriteElementString("href", link.Href);
+
+                if (link.ShouldSerializeIsHrefTemplated())
+                {
+                    writer.WriteElementString("templated", link.IsHrefTemplated.ToString().ToLowerInvariant());
+                }
+
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
+        }
+
         private static void SerialiseResources(XmlWriter writer, Type type, LinkedResource resource)
         {
             if (FormatterHelper.IsLinkedResourceCollectionType(type))
@@ -143,7 +165,7 @@ namespace Aliencube.WebApi.Hal.Formatters
             }
             else
             {
-                SerialiseInnerResource(writer, resource);
+                SerialiseProperties(writer, resource);
             }
         }
 
@@ -153,41 +175,18 @@ namespace Aliencube.WebApi.Hal.Formatters
 
             SetSelfLink(resource);
             SerialiseLinks(writer, resource.Links);
+            SerialiseProperties(writer, resource);
 
+            writer.WriteEndElement();
+        }
+
+        private static void SerialiseProperties(XmlWriter writer, LinkedResource resource)
+        {
             var properties = resource.GetType()
                                      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                      .Where(p => !p.Name.Equals("rel", StringComparison.InvariantCultureIgnoreCase) &&
                                                  !p.Name.Equals("href", StringComparison.InvariantCultureIgnoreCase));
 
-            SerialiseProperties(writer, resource, properties);
-
-            writer.WriteEndElement();
-        }
-
-        private static void SerialiseLinks(XmlWriter writer, IEnumerable<Link> links)
-        {
-            writer.WriteStartElement("links");
-
-            foreach (var link in links)
-            {
-                writer.WriteStartElement("link");
-
-                writer.WriteElementString("rel", link.Rel);
-                writer.WriteElementString("href", link.Href);
-
-                if (link.Href.Contains("{") && link.Href.Contains("}"))
-                {
-                    writer.WriteElementString("templated", true.ToString().ToLowerInvariant());
-                }
-
-                writer.WriteEndElement();
-            }
-
-            writer.WriteEndElement();
-        }
-
-        private static void SerialiseProperties<T>(XmlWriter writer, T resource, IEnumerable<PropertyInfo> properties)
-        {
             foreach (var property in properties)
             {
                 var propertyValue = property.GetValue(resource);
