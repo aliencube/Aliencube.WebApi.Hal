@@ -2,13 +2,9 @@
 using System.Web.Http;
 
 using Aliencube.WebApi.Hal.Configs;
-using Aliencube.WebApi.Hal.Formatters;
 
 using Autofac;
 using Autofac.Integration.WebApi;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using Owin;
 
