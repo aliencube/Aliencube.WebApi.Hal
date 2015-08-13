@@ -103,8 +103,12 @@
   <ItemGroup>
     <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\PingController.cs" />
-    <Compile Include="Models\Ping.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Helpers\ProductHelper.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
