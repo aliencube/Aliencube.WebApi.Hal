@@ -8,7 +8,7 @@ namespace Aliencube.WebApi.Hal.Resources
     /// This represents the collection entity for objects inheriting the <see cref="LinkedResource" /> class.
     /// </summary>
     /// <typeparam name="T">Type that inherits <see cref="LinkedResource" /> class.</typeparam>
-    public class LinkedResourceCollection<T> : LinkedResource, ICollection<T> where T : LinkedResource
+    public class LinkedResourceCollection<T> : LinkedResource, ICollection, ICollection<T> where T : LinkedResource
     {
         private readonly List<T> _items;
 
@@ -48,6 +48,22 @@ namespace Aliencube.WebApi.Hal.Resources
         public bool IsReadOnly
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Gets the sync root.
+        /// </summary>
+        public object SyncRoot
+        {
+            get { return new object(); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether is synchronised.
+        /// </summary>
+        public bool IsSynchronized
+        {
+            get { return true; }
         }
 
         /// <summary>
@@ -108,6 +124,23 @@ namespace Aliencube.WebApi.Hal.Resources
         public void CopyTo(T[] array, int arrayIndex)
         {
             this._items.CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        /// Copies the elements of the collection to an array, starting at a particular array index.
+        /// </summary>
+        /// <param name="array">
+        /// The one-dimensional array that is the destination of the elements copied from the collection. The array must have zero-based indexing.
+        /// </param>
+        /// <param name="index">
+        /// The zero-based index in array at which copying begins.
+        /// </param>
+        public void CopyTo(Array array, int index)
+        {
+            for (var i = index; i < this._items.Count; i++)
+            {
+                array.SetValue(this._items[i], i);
+            }
         }
 
         /// <summary>
