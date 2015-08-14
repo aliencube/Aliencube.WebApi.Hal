@@ -3,6 +3,13 @@
 **Aliencube.WebApi.Hal** provides REST responses with [HAL specification](https://tools.ietf.org/html/draft-kelly-json-hal) in Web API apps.
 
 
+## Package Status ##
+
+| NuGet Package | `master` | `dev` |
+|:-------------:|:--------:|:-----:|
+| [![](https://img.shields.io/nuget/v/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) [![](https://img.shields.io/nuget/dt/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) | [![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/master?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/master) | [[![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/dev) |
+
+
 ## Getting Started ##
 
 HAL basically provides metadata with REST responses. It works differently in JSON response and XML response. In order to apply HAL specifiation to your REST response with **Aliencube.WebApi.Hal**, follow the steps below.
