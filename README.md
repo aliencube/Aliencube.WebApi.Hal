@@ -7,7 +7,7 @@
 
 | NuGet Package | `master` | `dev` |
 |:-------------:|:--------:|:-----:|
-| [![](https://img.shields.io/nuget/v/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) [![](https://img.shields.io/nuget/dt/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) | [![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/master?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/master) | [[![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/dev) |
+| [![](https://img.shields.io/nuget/v/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) [![](https://img.shields.io/nuget/dt/Aliencube.WebApi.Hal.svg)](https://www.nuget.org/packages/Aliencube.WebApi.Hal/) | [![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/master?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/0ea0abx3i71m4y03/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/aliencube-webapi-hal/branch/dev) |
 
 
 ## Getting Started ##
