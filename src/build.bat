@@ -12,7 +12,9 @@ IF NOT EXIST %MSBUILDDIR%msbuild.exe goto MissingMSBuildExe
 "tools\nuget.exe" restore Aliencube.WebApi.Hal.sln
 "%MSBUILDDIR%msbuild.exe" "Aliencube.WebApi.Hal\Aliencube.WebApi.Hal.csproj" /t:ReBuild /p:Configuration=Release;TargetFrameworkVersion=v4.5;DefineConstants="TRACE;NET45";OutPutPath=bin\Release\net45\;DocumentationFile=bin\Release\net45\Aliencube.WebApi.Hal.xml
 
-mkdir build
+IF NOT EXIST build (
+    mkdir build
+)
 del "build\*.nupkg"
 
 IF [%1]==[] GOTO MissingVersion

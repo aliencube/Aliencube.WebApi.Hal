@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
     <metadata>
         <id>Aliencube.WebApi.Hal</id>
         <version>$version$</version>
@@ -9,7 +9,7 @@
         <licenseUrl>https://github.com/aliencube/Aliencube.WebApi.Hal/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/aliencube/Aliencube.WebApi.Hal</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>Aliencube.WebApi.Hal provides an implementation of HAL specification, without minimising impact on development experiences.</description>
+        <description>This provides an implementation of HAL specification (https://tools.ietf.org/html/draft-kelly-json-hal), minimising impacts on development experiences.</description>
         <copyright>Aliencube Community Copyright 2015</copyright>
         <tags>Aliencube, HAL, JSON, XML, Serialization, WebAPI</tags>
         <dependencies>
@@ -17,6 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\**\Aliencube.WebApi.Hal.*" target="lib" />
+        <file src="bin\Release\**\Aliencube.WebApi.Hal.*" target="lib\net45" />
+        <file src="..\tools\*.ps1" target="tools" />
     </files>
 </package>

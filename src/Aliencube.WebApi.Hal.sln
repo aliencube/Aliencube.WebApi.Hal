@@ -5,7 +5,6 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{5A454BA0-FEFA-42DD-984E-3DD77EA4A384}"
 	ProjectSection(SolutionItems) = preProject
-		build.bat = build.bat
 		Settings.StyleCop = Settings.StyleCop
 		..\docs\SharedAssemblyInfo.cs = ..\docs\SharedAssemblyInfo.cs
 	EndProjectSection
@@ -22,6 +21,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7D41DC
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.WebApi.App", "Aliencube.WebApi.App\Aliencube.WebApi.App.csproj", "{CE66AA4C-AD83-4D9B-8E7C-AB88074F22EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tools", ".tools", "{E7054A49-CE86-40B3-B957-301D4E4475BF}"
+	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
+		tools\install.ps1 = tools\install.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
