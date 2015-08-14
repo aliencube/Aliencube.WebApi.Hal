@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Aliencube.WebApi.Hal</id>
+        <version>$version$</version>
+        <title>Aliencube.WebApi.Hal</title>
+        <authors>Aliencube Community</authors>
+        <owners>aliencube</owners>
+        <licenseUrl>https://github.com/aliencube/Aliencube.WebApi.Hal/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/aliencube/Aliencube.WebApi.Hal</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Aliencube.WebApi.Hal provides an implementation of HAL specification, without minimising impact on development experiences.</description>
+        <copyright>Aliencube Community Copyright 2015</copyright>
+        <tags>Aliencube, HAL, JSON, XML, Serialization, WebAPI</tags>
+        <dependencies>
+            <dependency id="Microsoft.AspNet.WebApi.Core" version="5.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\**\Aliencube.WebApi.Hal.*" target="lib" />
+    </files>
+</package>
