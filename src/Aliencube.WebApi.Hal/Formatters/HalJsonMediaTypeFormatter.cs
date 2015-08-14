@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,18 +98,46 @@ namespace Aliencube.WebApi.Hal.Formatters
 
             var jo = this.SerialiseResource(embedded);
 
-            var links = resource.Links.Select(p => new KeyValuePair<string, Link>(p.Rel, p)).ToList();
-            SetSelfLink(resource, links);
-
-            var jlo = SerialiseLinks(links);
-
-            jo["_links"] = jlo;
+            AddLinksToEmbeddedResource(type, value, jo);
+            AddLinksToResource(resource, jo);
 
             var sw = new StreamWriter(writeStream, effectiveEncoding);
             var writer = new JsonTextWriter(sw);
             jo.WriteTo(writer);
             writer.Flush();
             sw.Flush();
+        }
+
+        private static void AddLinksToEmbeddedResource(Type type, object value, JToken jo)
+        {
+            var embedded = jo["_embedded"] as JArray;
+            if (embedded == null)
+            {
+                return;
+            }
+
+            if (!FormatterHelper.IsLinkedResourceCollectionType(type))
+            {
+                return;
+            }
+
+            var resources = new LinkedResource[((ICollection)value).Count];
+            ((ICollection)value).CopyTo(resources, 0);
+
+            for (var i = 0; i < resources.Length; i++)
+            {
+                var resource = resources[i];
+                AddLinksToResource(resource, embedded[i]);
+            }
+        }
+
+        private static void AddLinksToResource(LinkedResource resource, JToken jo)
+        {
+            var links = resource.Links.Select(p => new KeyValuePair<string, Link>(p.Rel, p)).ToList();
+            SetSelfLink(resource, links);
+
+            var jlo = SerialiseLinks(links);
+            jo["_links"] = jlo;
         }
 
         private static void SetSelfLink(LinkedResource resource, IList<KeyValuePair<string, Link>> links)

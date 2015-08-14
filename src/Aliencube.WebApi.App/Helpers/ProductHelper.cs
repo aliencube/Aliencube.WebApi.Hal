@@ -43,7 +43,7 @@ namespace Aliencube.WebApi.App.Helpers
                                     Href = "/product/2",
                                     Links =
                                         {
-                                            new Link() { Rel = "next", Href = "/products?p=2" },
+                                            new Link() { Rel = "collection", Href = "/products" },
                                             new Link() { Rel = "template", Href = "/product/{productId}" },
                                         }
                                 },
