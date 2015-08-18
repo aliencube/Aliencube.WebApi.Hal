@@ -84,6 +84,26 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <param name="effectiveEncoding">The encoding to use when writing.</param>
         public override void WriteToStream(Type type, object value, Stream writeStream, Encoding effectiveEncoding)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if (value == null)
+            {
+                return;
+            }
+
+            if (writeStream == null)
+            {
+                throw new ArgumentNullException("writeStream");
+            }
+
+            if (effectiveEncoding == null)
+            {
+                throw new ArgumentNullException("effectiveEncoding");
+            }
+
             var resource = value as LinkedResource;
             if (resource == null)
             {
