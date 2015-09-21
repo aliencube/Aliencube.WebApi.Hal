@@ -2,8 +2,6 @@
 
 using Aliencube.WebApi.App.Helpers;
 using Aliencube.WebApi.App.Models;
-using Aliencube.WebApi.Hal.Extensions;
-using Aliencube.WebApi.Hal.Resources;
 
 namespace Aliencube.WebApi.App.Controllers
 {
@@ -11,7 +9,7 @@ namespace Aliencube.WebApi.App.Controllers
     /// This represents the controller entity for product.
     /// </summary>
     [RoutePrefix("product")]
-    public class ProductController : BaseController
+    public class ProductController : BaseApiController
     {
         /// <summary>
         /// Gets the <see cref="Product" /> instance.
