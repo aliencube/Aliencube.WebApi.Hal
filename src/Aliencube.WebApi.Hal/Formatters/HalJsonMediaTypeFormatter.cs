@@ -110,6 +110,18 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return;
             }
 
+            IResourceFormatter formatter;
+            if (FormatterHelper.IsLinkedResourceCollectionType(type))
+            {
+                formatter = new JsonLinkedResourceCollectionFormatter();
+            }
+            else
+            {
+                formatter = new JsonLinkedResourceFormatter();
+            }
+
+            formatter.WriteToStream(type, value, writeStream, effectiveEncoding);
+
             var embedded = value;
             if (this.UseEmbeddedKey(type))
             {
