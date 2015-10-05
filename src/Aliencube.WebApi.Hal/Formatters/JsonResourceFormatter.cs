@@ -18,6 +18,14 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Initialises a new instance of the <see cref="JsonResourceFormatter" /> class.
         /// </summary>
+        protected JsonResourceFormatter()
+        {
+            this.Settings = new JsonSerializerSettings();
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="JsonResourceFormatter" /> class.
+        /// </summary>
         /// <param name="settings">The <see cref="JsonSerializerSettings" /> value.</param>
         protected JsonResourceFormatter(JsonSerializerSettings settings)
         {
@@ -65,9 +73,7 @@ namespace Aliencube.WebApi.Hal.Formatters
 
         protected JObject SerialiseResource(object embedded)
         {
-            var so = this.SerializerSettings == null
-                ? JsonConvert.SerializeObject(embedded, this.Formatting)
-                : JsonConvert.SerializeObject(embedded, this.Formatting, this.SerializerSettings);
+            var so = JsonConvert.SerializeObject(embedded, this.Settings);
 
             var jo = JObject.Parse(so);
             return jo;

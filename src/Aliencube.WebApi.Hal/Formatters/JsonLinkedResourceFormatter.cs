@@ -16,6 +16,14 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Initialises a new instance of the <see cref="JsonLinkedResourceFormatter" /> class.
         /// </summary>
+        public JsonLinkedResourceFormatter()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="JsonLinkedResourceFormatter" /> class.
+        /// </summary>
         /// <param name="settings">The <see cref="JsonSerializerSettings" /> value.</param>
         public JsonLinkedResourceFormatter(JsonSerializerSettings settings)
             : base(settings)
