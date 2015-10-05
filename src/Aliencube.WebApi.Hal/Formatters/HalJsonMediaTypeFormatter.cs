@@ -113,11 +113,11 @@ namespace Aliencube.WebApi.Hal.Formatters
             IResourceFormatter formatter;
             if (FormatterHelper.IsLinkedResourceCollectionType(type))
             {
-                formatter = new JsonLinkedResourceCollectionFormatter();
+                formatter = new JsonLinkedResourceCollectionFormatter(this.SerializerSettings);
             }
             else
             {
-                formatter = new JsonLinkedResourceFormatter();
+                formatter = new JsonLinkedResourceFormatter(this.SerializerSettings);
             }
 
             formatter.WriteToStream(type, value, writeStream, effectiveEncoding);
