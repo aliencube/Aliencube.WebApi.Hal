@@ -87,6 +87,7 @@
     <Compile Include="HalXmlMediaTypeFormatterTest.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Helpers\ProductHelper.cs" />
+    <Compile Include="JsonLinkedResourceFormatterTest.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

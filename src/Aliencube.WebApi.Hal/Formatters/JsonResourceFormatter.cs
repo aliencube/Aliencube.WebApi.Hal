@@ -144,13 +144,11 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <param name="encoding"><see cref="Encoding" /> value.</param>
         protected void WriteToStream(JToken resource, Stream stream, Encoding encoding)
         {
-            using (var sw = new StreamWriter(stream, encoding))
-            using (var writer = new JsonTextWriter(sw))
-            {
-                resource.WriteTo(writer);
-                writer.Flush();
-                sw.Flush();
-            }
+            var sw = new StreamWriter(stream, encoding);
+            var writer = new JsonTextWriter(sw);
+            resource.WriteTo(writer);
+            writer.Flush();
+            sw.Flush();
         }
 
         private static JObject ParseLinks(IReadOnlyList<KeyValuePair<string, Link>> links)
