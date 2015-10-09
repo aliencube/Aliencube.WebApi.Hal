@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace Aliencube.WebApi.Hal.Resources
 {
@@ -7,6 +9,11 @@ namespace Aliencube.WebApi.Hal.Resources
     /// </summary>
     public class Link
     {
+        public Link()
+        {
+            this.OptionalParameters = new List<OptionalParameter>();
+        }
+
         /// <summary>
         /// Gets or sets the rel of the link.
         /// </summary>
@@ -27,6 +34,12 @@ namespace Aliencube.WebApi.Hal.Resources
         {
             get { return this.Href.Contains("{") && this.Href.Contains("}"); }
         }
+
+        /// <summary>
+        /// Gets the list of <see cref="OptionalParameter" /> instances.
+        /// </summary>
+        [JsonIgnore]
+        public List<OptionalParameter> OptionalParameters { get; set; }
 
         /// <summary>
         /// Checks the value whether the <c>IsHrefTemplated</c> value is <c>True</c> so that the property should be included for serialisation or not.

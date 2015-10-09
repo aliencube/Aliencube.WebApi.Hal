@@ -137,7 +137,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <returns>Returns the JSON parsed links.</returns>
         protected JObject ParseLinks(LinkedResource resource)
         {
-            var links = resource.Links.Select(p => new KeyValuePair<string, Link>(p.Rel, p)).ToList();
+            var links = resource.Links.Select(p => new KeyValuePair<string, string>(p.Rel, SerialiseLink(p))).ToList();
             var parsed = ParseLinks(links);
 
             if (string.IsNullOrWhiteSpace(resource.Href))
@@ -150,7 +150,8 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return parsed;
             }
 
-            links.Insert(0, new KeyValuePair<string, Link>("self", new Link() { Rel = "self", Href = resource.Href }));
+            var self = new Link() { Rel = "self", Href = resource.Href };
+            links.Insert(0, new KeyValuePair<string, string>("self", JsonConvert.SerializeObject(self)));
 
             parsed = ParseLinks(links);
             return parsed;
@@ -171,7 +172,30 @@ namespace Aliencube.WebApi.Hal.Formatters
             sw.Flush();
         }
 
-        private static JObject ParseLinks(IReadOnlyList<KeyValuePair<string, Link>> links)
+        private static string SerialiseLink(Link link)
+        {
+            var serialised = JsonConvert.SerializeObject(link);
+
+            if (!link.OptionalParameters.Any())
+            {
+                return serialised;
+            }
+
+            var sb = new StringBuilder();
+            for (var i = 0; i < link.OptionalParameters.Count; i++)
+            {
+                var parameter = link.OptionalParameters[i];
+                sb.AppendFormat(
+                                ", \"{0}\": \"{1}\"",
+                                parameter.Key.ToString().ToLowerInvariant(),
+                                parameter.Value);
+            }
+
+            var inserted = serialised.Insert(serialised.Length - 1, sb.ToString());
+            return inserted;
+        }
+
+        private static JObject ParseLinks(IReadOnlyList<KeyValuePair<string, string>> links)
         {
             var sb = new StringBuilder();
             sb.Append("{");
@@ -181,7 +205,7 @@ namespace Aliencube.WebApi.Hal.Formatters
                 sb.AppendFormat(
                                 "\"{0}\": {1}{2}",
                                 link.Key,
-                                JsonConvert.SerializeObject(link.Value),
+                                link.Value,
                                 i == links.Count - 1 ? string.Empty : ",");
             }
 

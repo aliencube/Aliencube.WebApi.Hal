@@ -58,7 +58,6 @@
     <Compile Include="Configs\HalFormatterConfig.cs" />
     <Compile Include="Extensions\LinkedResourceExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Formatters\EmbeddedType.cs" />
     <Compile Include="Formatters\HalJsonMediaTypeFormatter.cs" />
     <Compile Include="Formatters\HalXmlMediaTypeFormatter.cs" />
     <Compile Include="Formatters\IResourceFormatter.cs" />
@@ -71,9 +70,12 @@
     <Compile Include="Resources\Link.cs" />
     <Compile Include="Resources\LinkedResource.cs" />
     <Compile Include="Resources\LinkedResourceCollection.cs" />
+    <Compile Include="Resources\OptionalParameter.cs" />
+    <Compile Include="Resources\OptionalParameterType.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Aliencube.WebApi.Hal.nuspec" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
