@@ -107,8 +107,6 @@ namespace Aliencube.WebApi.Hal.Tests
                 href.Should().BeNullOrEmpty();
             }
 
-            this._formatter.EmbeddedType = EmbeddedType.Embedded;
-
             using (var stream = new MemoryStream())
             {
                 this._formatter.WriteToStream(typeof(Product), product, stream, Encoding.UTF8);
