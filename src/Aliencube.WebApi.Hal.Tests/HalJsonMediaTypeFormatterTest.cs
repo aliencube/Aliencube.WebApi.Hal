@@ -106,24 +106,6 @@ namespace Aliencube.WebApi.Hal.Tests
                 var href = jo.SelectToken("href");
                 href.Should().BeNullOrEmpty();
             }
-
-            using (var stream = new MemoryStream())
-            {
-                this._formatter.WriteToStream(typeof(Product), product, stream, Encoding.UTF8);
-                var jo = FormatterHelper.ParseJsonStream(stream);
-
-                var links = jo.SelectToken("_links");
-                links.Should().NotBeNullOrEmpty();
-
-                var self = links.SelectToken("self");
-                self.Should().NotBeNullOrEmpty();
-
-                var embedded = jo.SelectToken("_embedded");
-                embedded.Should().NotBeNullOrEmpty();
-
-                var href = jo.SelectToken("href");
-                href.Should().BeNullOrEmpty();
-            }
         }
 
         /// <summary>

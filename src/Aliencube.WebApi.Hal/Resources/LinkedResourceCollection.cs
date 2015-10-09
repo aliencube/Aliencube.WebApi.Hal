@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ namespace Aliencube.WebApi.Hal.Resources
     /// This represents the collection entity for objects inheriting the <see cref="LinkedResource" /> class.
     /// </summary>
     /// <typeparam name="T">Type that inherits <see cref="LinkedResource" /> class.</typeparam>
-    public class LinkedResourceCollection<T> : LinkedResource where T : LinkedResource
+    public class LinkedResourceCollection<T> : LinkedResource, ICollection where T : LinkedResource
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="LinkedResourceCollection{T}" /> class.
@@ -46,6 +47,28 @@ namespace Aliencube.WebApi.Hal.Resources
         public int Count
         {
             get { return this.Items.Count; }
+        }
+
+        /// <summary>
+        /// Gets an object that can be used to synchronize access to the <see cref="ICollection" />.
+        /// </summary>
+        public object SyncRoot
+        {
+            get
+            {
+                return ((ICollection)Items).SyncRoot;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether access to the <see cref="ICollection" /> is synchronized (thread safe).
+        /// </summary>
+        public bool IsSynchronized
+        {
+            get
+            {
+                return ((ICollection)Items).IsSynchronized;
+            }
         }
 
         /// <summary>
@@ -96,6 +119,28 @@ namespace Aliencube.WebApi.Hal.Resources
         {
             var result = this.Items.Remove(item);
             return result;
+        }
+
+        /// <summary>
+        /// Copies the elements of the <see cref="ICollection" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from <see cref="ICollection" />. The <see cref="Array" /> must have zero-based indexing.</param>
+        /// <param name="index">The zero-based index in <paramref name="array"/> at which copying begins. </param>
+
+        public void CopyTo(Array array, int index)
+        {
+            ((ICollection)Items).CopyTo(array, index);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator GetEnumerator()
+        {
+            return ((ICollection)Items).GetEnumerator();
         }
     }
 }

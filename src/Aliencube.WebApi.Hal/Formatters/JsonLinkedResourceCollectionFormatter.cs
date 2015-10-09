@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 
 using Aliencube.WebApi.Hal.Resources;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.WebApi.Hal.Formatters
 {
@@ -59,10 +61,15 @@ namespace Aliencube.WebApi.Hal.Formatters
                 throw new ArgumentNullException(nameof(effectiveEncoding));
             }
 
+            var resources = new LinkedResource[((ICollection)value).Count];
+            ((ICollection)value).CopyTo(resources, 0);
+            var parsedCollection = this.ParseResourceCollection(resources);
+
             var resource = (LinkedResource)value;
-            var parsedResource = this.ParseResource(resource);
             var parsedLinks = this.ParseLinks(resource);
 
+            var parsedResource = new JObject();
+            parsedResource["_embedded"] = parsedCollection;
             parsedResource["_links"] = parsedLinks;
 
             this.WriteToStream(parsedResource, writeStream, effectiveEncoding);

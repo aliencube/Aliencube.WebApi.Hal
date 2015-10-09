@@ -104,10 +104,30 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <returns>Returns the JSON parsed resource.</returns>
         protected JObject ParseResource(LinkedResource resource)
         {
-            var so = JsonConvert.SerializeObject(resource, this.Settings);
+            var serialised = JsonConvert.SerializeObject(resource, this.Settings);
 
-            var jo = JObject.Parse(so);
-            return jo;
+            var parsed = JObject.Parse(serialised);
+            return parsed;
+        }
+
+        /// <summary>
+        /// Parses the <see cref="LinkedResourceCollection" /> instance.
+        /// </summary>
+        /// <param name="resource"><see cref="LinkedResource" /> instance to be parsed.</param>
+        /// <returns>Returns the JSON parsed resource.</returns>
+        protected JArray ParseResourceCollection(IEnumerable<LinkedResource> resources)
+        {
+            JArray collection = new JArray();
+            foreach (var resource in resources)
+            {
+                var parsed = this.ParseResource(resource);
+                var parsedLinks = this.ParseLinks(resource);
+
+                parsed["_links"] = parsedLinks;
+                collection.Add(parsed);
+            }
+
+            return collection;
         }
 
         /// <summary>
