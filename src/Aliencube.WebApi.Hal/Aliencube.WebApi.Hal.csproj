@@ -64,6 +64,8 @@
     <Compile Include="Formatters\JsonLinkedResourceFormatter.cs" />
     <Compile Include="Formatters\JsonResourceFormatter.cs" />
     <Compile Include="Formatters\JsonLinkedResourceCollectionFormatter.cs" />
+    <Compile Include="Formatters\XmlLinkedResourceCollectionFormatter.cs" />
+    <Compile Include="Formatters\XmlLinkedResourceFormatter.cs" />
     <Compile Include="Formatters\XmlResourceFormatter.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

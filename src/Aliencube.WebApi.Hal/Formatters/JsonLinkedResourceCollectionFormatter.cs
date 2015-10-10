@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 namespace Aliencube.WebApi.Hal.Formatters
 {
     /// <summary>
-    /// This represents the formatter entity for the <see cref="LinkedResourceCollection{T}" />.
+    /// This represents the JSON formatter entity for the <see cref="LinkedResourceCollection{T}" />.
     /// </summary>
     public class JsonLinkedResourceCollectionFormatter : JsonResourceFormatter
     {
@@ -61,11 +61,16 @@ namespace Aliencube.WebApi.Hal.Formatters
                 throw new ArgumentNullException(nameof(effectiveEncoding));
             }
 
+            var resource = value as LinkedResource;
+            if (resource == null)
+            {
+                return;
+            }
+
             var resources = new LinkedResource[((ICollection)value).Count];
             ((ICollection)value).CopyTo(resources, 0);
             var parsedCollection = this.ParseResourceCollection(resources);
 
-            var resource = (LinkedResource)value;
             var parsedLinks = this.ParseLinks(resource);
 
             var parsedResource = new JObject();

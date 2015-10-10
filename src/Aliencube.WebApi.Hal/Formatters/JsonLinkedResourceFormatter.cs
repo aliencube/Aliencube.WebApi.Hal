@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace Aliencube.WebApi.Hal.Formatters
 {
     /// <summary>
-    /// This represents the formatter entity for the <see cref="LinkedResource" />.
+    /// This represents the JSON formatter entity for the <see cref="LinkedResource" />.
     /// </summary>
     public class JsonLinkedResourceFormatter : JsonResourceFormatter
     {
@@ -59,7 +59,13 @@ namespace Aliencube.WebApi.Hal.Formatters
                 throw new ArgumentNullException(nameof(effectiveEncoding));
             }
 
-            var resource = (LinkedResource)value;
+
+            var resource = value as LinkedResource;
+            if (resource == null)
+            {
+                return;
+            }
+
             var parsedResource = this.ParseResource(resource);
             var parsedLinks = this.ParseLinks(resource);
 
