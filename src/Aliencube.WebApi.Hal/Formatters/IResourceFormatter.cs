@@ -3,6 +3,8 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 
+using Aliencube.WebApi.Hal.Resources;
+
 namespace Aliencube.WebApi.Hal.Formatters
 {
     /// <summary>
@@ -27,5 +29,12 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <param name="writeStream">The stream to write to.</param>
         /// <param name="content">The <see cref="HttpContent" /> instance, if available. This can be null.</param>
         void WriteToStream(Type type, object value, Stream writeStream, HttpContent content);
+
+        /// <summary>
+        /// Called during the <see cref="LinkedResource" /> serialisation.
+        /// </summary>
+        /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
+        /// <param name="objects">List of objects for serialisation.</param>
+        void OnSerialisingResource(LinkedResource resource, params object[] objects);
     }
 }
