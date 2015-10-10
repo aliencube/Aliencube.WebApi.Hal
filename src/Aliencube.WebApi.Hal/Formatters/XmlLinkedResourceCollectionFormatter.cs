@@ -25,8 +25,9 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// Initialises a new instance of the <see cref="XmlLinkedResourceCollectionFormatter" /> class.
         /// </summary>
         /// <param name="ns">The namespace for XML.</param>
-        public XmlLinkedResourceCollectionFormatter(string ns)
-            : base(ns)
+        /// <param name="settings"><see cref="XmlWriterSettings" /> instance.</param>
+        public XmlLinkedResourceCollectionFormatter(string ns, XmlWriterSettings settings)
+            : base(ns, settings)
         {
         }
 

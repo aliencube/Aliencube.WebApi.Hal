@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 
 using Aliencube.WebApi.Hal.Extensions;
@@ -10,72 +13,38 @@ using Aliencube.WebApi.Hal.Tests.Models;
 
 using FluentAssertions;
 
+using Moq;
+
 using NUnit.Framework;
 
 namespace Aliencube.WebApi.Hal.Tests
 {
-    /// <summary>
-    /// This represents the test entity for the <see cref="HalXmlMediaTypeFormatter" /> class.
-    /// </summary>
     [TestFixture]
-    public class HalXmlMediaTypeFormatterTest
+    public class XmlLinkedResourceFormatterTest
     {
         private const string Namespace = "http://test.com/halxmlmediatypeformatter";
 
-        private HalXmlMediaTypeFormatter _formatter;
+        private Mock<HttpContent> _content;
+        private XmlWriterSettings _settings;
+        private IResourceFormatter _formatter;
 
-        /// <summary>
-        /// Initialises resources for the test class.
-        /// </summary>
         [SetUp]
         public void Init()
         {
-            this._formatter = new HalXmlMediaTypeFormatter()
-                              {
-                                  Namespace = Namespace
-                              };
+            this._content = new Mock<HttpContent>();
+            this._settings = new XmlWriterSettings()
+                             {
+                                 Indent = true,
+                                 OmitXmlDeclaration = false,
+                                 Encoding = Encoding.UTF8
+                             };
+
+            this._formatter = new XmlLinkedResourceFormatter(Namespace, this._settings);
         }
 
-        /// <summary>
-        /// Releases all resources.
-        /// </summary>
         [TearDown]
         public void Cleanup()
         {
-        }
-
-        /// <summary>
-        /// Tests whether the given type can be read or not.
-        /// </summary>
-        [Test]
-        public void GivenTypeShouldBeAbleToRead()
-        {
-            var product = ProductHelper.GetProduct(1);
-
-            var result = this._formatter.CanReadType(product.GetType());
-            result.Should().BeTrue();
-
-            var products = ProductHelper.GetProducts(2);
-
-            result = this._formatter.CanReadType(products.GetType());
-            result.Should().BeTrue();
-        }
-
-        /// <summary>
-        /// Tests whether the given type can be written or not.
-        /// </summary>
-        [Test]
-        public void GivenTypeShouldBeAbleToWrite()
-        {
-            var product = ProductHelper.GetProduct(1);
-
-            var result = this._formatter.CanWriteType(product.GetType());
-            result.Should().BeTrue();
-
-            var products = ProductHelper.GetProducts(2);
-
-            result = this._formatter.CanWriteType(products.GetType());
-            result.Should().BeTrue();
         }
 
         /// <summary>
@@ -89,7 +58,7 @@ namespace Aliencube.WebApi.Hal.Tests
             XDocument xml;
             using (var stream = new MemoryStream())
             {
-                this._formatter.WriteToStream(typeof(Product), product, stream, null);
+                this._formatter.WriteToStream(typeof(Product), product, stream, this._content.Object);
                 xml = FormatterHelper.ParseXmlStream(stream);
             }
 

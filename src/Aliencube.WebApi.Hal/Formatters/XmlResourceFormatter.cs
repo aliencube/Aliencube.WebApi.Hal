@@ -26,21 +26,22 @@ namespace Aliencube.WebApi.Hal.Formatters
         protected XmlResourceFormatter()
         {
             this.Settings = new XmlWriterSettings()
-            {
-                Indent = true,
-                OmitXmlDeclaration = false,
-                Encoding = Encoding.UTF8
-            };
+                            {
+                                Indent = true,
+                                OmitXmlDeclaration = false,
+                                Encoding = Encoding.UTF8
+                            };
         }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="XmlResourceFormatter" /> class.
         /// </summary>
         /// <param name="ns">The namespace for XML.</param>
-        protected XmlResourceFormatter(string ns)
-            : this()
+        /// <param name="settings"><see cref="XmlWriterSettings" /> instance.</param>
+        protected XmlResourceFormatter(string ns, XmlWriterSettings settings)
         {
             this.Namespace = ns;
+            this.Settings = settings;
         }
 
         /// <summary>
@@ -57,18 +58,18 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// Creates the <see cref="IResourceFormatter" /> instance.
         /// </summary>
         /// <param name="type"><see cref="Type" /> to check.</param>
-        /// <param name="settings"><see cref="JsonSerializerSettings" /> instance.</param>
+        /// <param name="settings"><see cref="XmlWriterSettings" /> instance.</param>
         /// <returns>Returns the <see cref="IResourceFormatter" /> instance created.</returns>
-        public static IResourceFormatter Create(Type type, string ns)
+        public static IResourceFormatter Create(Type type, string ns, XmlWriterSettings settings)
         {
             IResourceFormatter formatter;
             if (FormatterHelper.IsLinkedResourceCollectionType(type))
             {
-                formatter = new XmlLinkedResourceCollectionFormatter(ns);
+                formatter = new XmlLinkedResourceCollectionFormatter(ns, settings);
             }
             else
             {
-                formatter = new XmlLinkedResourceFormatter(ns);
+                formatter = new XmlLinkedResourceFormatter(ns, settings);
             }
 
             return formatter;
@@ -216,6 +217,11 @@ namespace Aliencube.WebApi.Hal.Formatters
             }
         }
 
+        /// <summary>
+        /// Serialises properties on the <see cref="LinkedResource" /> class.
+        /// </summary>
+        /// <param name="writer"><see cref="XmlWriter" /> instance.</param>
+        /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
         protected void SerialiseProperties(XmlWriter writer, LinkedResource resource)
         {
             var properties = resource.GetType()
@@ -241,6 +247,11 @@ namespace Aliencube.WebApi.Hal.Formatters
             }
         }
 
+        /// <summary>
+        /// Serialises the <see cref="LinkedResource" /> class.
+        /// </summary>
+        /// <param name="writer"><see cref="XmlWriter" /> instance.</param>
+        /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
         protected void SerialiseInnerResource(XmlWriter writer, LinkedResource resource)
         {
             writer.WriteStartElement("resource");

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 using System.Xml;
-
-using Aliencube.WebApi.Hal.Extensions;
 using Aliencube.WebApi.Hal.Helpers;
 using Aliencube.WebApi.Hal.Resources;
 
@@ -21,11 +15,20 @@ namespace Aliencube.WebApi.Hal.Formatters
     /// </summary>
     public class HalXmlMediaTypeFormatter : BufferedMediaTypeFormatter
     {
+        private XmlWriterSettings _settings;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="HalXmlMediaTypeFormatter" /> class.
         /// </summary>
         public HalXmlMediaTypeFormatter()
         {
+            this._settings = new XmlWriterSettings()
+                             {
+                                 Indent = true,
+                                 OmitXmlDeclaration = false,
+                                 Encoding = Encoding.UTF8
+                             };
+
             this.SetSupportedMediaTypes();
         }
 
@@ -110,128 +113,9 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return;
             }
 
-            var formatter = XmlResourceFormatter.Create(type, this.Namespace);
+            var formatter = XmlResourceFormatter.Create(type, this.Namespace, this._settings);
             formatter.WriteToStream(type, value, writeStream, content);
-
-            //var settings = new XmlWriterSettings()
-            //               {
-            //                   Indent = true,
-            //                   OmitXmlDeclaration = false,
-            //                   Encoding = Encoding.UTF8
-            //               };
-
-            //using (var writer = XmlWriter.Create(writeStream, settings))
-            //{
-            //    if (string.IsNullOrWhiteSpace(this.Namespace))
-            //    {
-            //        writer.WriteStartElement("resource");
-            //    }
-            //    else
-            //    {
-            //        writer.WriteStartElement("resource", this.Namespace);
-            //    }
-
-            //    SetSelfLink(resource);
-            //    SerialiseLinks(writer, resource.Links);
-            //    SerialiseResources(writer, type, resource);
-
-            //    writer.WriteEndElement();
-            //    writer.Flush();
-            //}
         }
-
-        //private static void SetSelfLink(LinkedResource resource)
-        //{
-        //    if (string.IsNullOrWhiteSpace(resource.Href))
-        //    {
-        //        return;
-        //    }
-
-        //    var links = resource.Links;
-        //    if (links.Any(p => p.Rel.Equals("self", StringComparison.InvariantCultureIgnoreCase)))
-        //    {
-        //        return;
-        //    }
-
-        //    resource.Links.Insert(0, new Link() { Rel = "self", Href = resource.Href });
-        //}
-
-        //private static void SerialiseLinks(XmlWriter writer, IEnumerable<Link> links)
-        //{
-        //    writer.WriteStartElement("links");
-
-        //    foreach (var link in links)
-        //    {
-        //        writer.WriteStartElement("link");
-
-        //        writer.WriteElementString("rel", link.Rel);
-        //        writer.WriteElementString("href", link.Href);
-
-        //        if (link.ShouldSerializeIsHrefTemplated())
-        //        {
-        //            writer.WriteElementString("templated", link.IsHrefTemplated.ToString().ToLowerInvariant());
-        //        }
-
-        //        writer.WriteEndElement();
-        //    }
-
-        //    writer.WriteEndElement();
-        //}
-
-        //private static void SerialiseResources(XmlWriter writer, Type type, LinkedResource resource)
-        //{
-        //    if (FormatterHelper.IsLinkedResourceCollectionType(type))
-        //    {
-        //        writer.WriteStartElement("resources");
-
-        //        foreach (LinkedResource innerResource in (IEnumerable)resource)
-        //        {
-        //            SerialiseInnerResource(writer, innerResource);
-        //        }
-
-        //        writer.WriteEndElement();
-        //    }
-        //    else
-        //    {
-        //        SerialiseProperties(writer, resource);
-        //    }
-        //}
-
-        //private static void SerialiseInnerResource(XmlWriter writer, LinkedResource resource)
-        //{
-        //    writer.WriteStartElement("resource");
-
-        //    SetSelfLink(resource);
-        //    SerialiseLinks(writer, resource.Links);
-        //    SerialiseProperties(writer, resource);
-
-        //    writer.WriteEndElement();
-        //}
-
-        //private static void SerialiseProperties(XmlWriter writer, LinkedResource resource)
-        //{
-        //    var properties = resource.GetType()
-        //                             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        //                             .Where(p => !p.Name.Equals("rel", StringComparison.InvariantCultureIgnoreCase) &&
-        //                                         !p.Name.Equals("href", StringComparison.InvariantCultureIgnoreCase));
-
-        //    foreach (var property in properties)
-        //    {
-        //        var propertyValue = property.GetValue(resource);
-        //        if (property.PropertyType.IsPrimitive || property.PropertyType == typeof(string))
-        //        {
-        //            writer.WriteElementString(property.Name.ToCamelCase(), propertyValue.ToString());
-        //        }
-        //        else
-        //        {
-        //            var value = propertyValue as LinkedResource;
-        //            if (value != null)
-        //            {
-        //                SerialiseInnerResource(writer, value);
-        //            }
-        //        }
-        //    }
-        //}
 
         private void SetSupportedMediaTypes()
         {
