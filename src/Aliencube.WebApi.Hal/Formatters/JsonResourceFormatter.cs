@@ -40,7 +40,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Gets the <see cref="JsonSerializerSettings" /> value.
         /// </summary>
-        protected JsonSerializerSettings Settings { get; private set; }
+        protected JsonSerializerSettings Settings { get; }
 
         /// <summary>
         /// Creates the <see cref="IResourceFormatter" /> instance.
@@ -104,6 +104,12 @@ namespace Aliencube.WebApi.Hal.Formatters
             this._disposed = true;
         }
 
+        /// <summary>
+        /// Writes the JSON object to the stream with given encoding.
+        /// </summary>
+        /// <param name="writeStream"><see cref="Stream" /> instance.</param>
+        /// <param name="effectiveEncoding"><see cref="Encoding" /> instance.</param>
+        /// <param name="resource"><see cref="LinkedResource" /> instance to serialise.</param>
         protected void WriteToStream(Stream writeStream, Encoding effectiveEncoding, LinkedResource resource)
         {
             this.OnSerialisingResource(resource, writeStream, effectiveEncoding);
@@ -138,9 +144,9 @@ namespace Aliencube.WebApi.Hal.Formatters
         }
 
         /// <summary>
-        /// Parses the <see cref="LinkedResourceCollection" /> instance.
+        /// Parses the list of <see cref="LinkedResource" /> instances.
         /// </summary>
-        /// <param name="resource"><see cref="LinkedResource" /> instance to be parsed.</param>
+        /// <param name="resources"><see cref="LinkedResource" /> instance to be parsed.</param>
         /// <returns>Returns the JSON parsed resource.</returns>
         protected JArray ParseResourceCollection(IEnumerable<LinkedResource> resources)
         {

@@ -9,6 +9,9 @@ namespace Aliencube.WebApi.Hal.Resources
     /// </summary>
     public class Link
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Link" /> class.
+        /// </summary>
         public Link()
         {
             this.OptionalParameters = new List<OptionalParameter>();

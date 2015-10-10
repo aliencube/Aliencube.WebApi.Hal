@@ -47,17 +47,18 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Gets the namespace for XML.
         /// </summary>
-        protected string Namespace { get; private set; }
+        protected string Namespace { get; }
 
         /// <summary>
         /// Gets the <see cref="XmlWriterSettings" /> value.
         /// </summary>
-        protected XmlWriterSettings Settings { get; private set; }
+        protected XmlWriterSettings Settings { get; }
 
         /// <summary>
         /// Creates the <see cref="IResourceFormatter" /> instance.
         /// </summary>
         /// <param name="type"><see cref="Type" /> to check.</param>
+        /// <param name="ns">Namespace for XML.</param>
         /// <param name="settings"><see cref="XmlWriterSettings" /> instance.</param>
         /// <returns>Returns the <see cref="IResourceFormatter" /> instance created.</returns>
         public static IResourceFormatter Create(Type type, string ns, XmlWriterSettings settings)
