@@ -99,10 +99,9 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Called during the <see cref="LinkedResource" /> serialisation.
         /// </summary>
-        /// <param name="writer"><see cref="XmlWriter" /> instance.</param>
-        /// <param name="type">The type of the object to write.</param>
         /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
-        public abstract void OnSerialisingResource(XmlWriter writer, Type type, LinkedResource resource);
+        /// <param name="objects">List of objects for serialisation.</param>
+        public abstract void OnSerialisingResource(LinkedResource resource, params object[] objects);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -138,7 +137,7 @@ namespace Aliencube.WebApi.Hal.Formatters
 
                 this.SetSelfLink(resource);
                 this.SerialiseLinks(writer, resource.Links);
-                this.OnSerialisingResource(writer, type, resource);
+                this.OnSerialisingResource(resource, type, writer);
 
                 writer.WriteEndElement();
                 writer.Flush();

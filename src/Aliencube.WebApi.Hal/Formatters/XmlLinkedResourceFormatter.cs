@@ -66,11 +66,27 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Called during the <see cref="LinkedResource" /> serialisation.
         /// </summary>
-        /// <param name="writer"><see cref="XmlWriter" /> instance.</param>
-        /// <param name="type">The type of the object to write.</param>
         /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
-        public override void OnSerialisingResource(XmlWriter writer, Type type, LinkedResource resource)
+        /// <param name="objects">List of objects for serialisation.</param>
+        public override void OnSerialisingResource(LinkedResource resource, params object[] objects)
         {
+            if (objects.Length > 2)
+            {
+                throw new InvalidOperationException("Too many parameters");
+            }
+
+            var type = objects[0] as Type;
+            if (type == null)
+            {
+                throw new InvalidOperationException("Invalid parameter");
+            }
+
+            var writer = objects[1] as XmlWriter;
+            if (writer == null)
+            {
+                throw new InvalidOperationException("Invalid parameter");
+            }
+
             this.SerialiseProperties(writer, resource);
         }
     }
