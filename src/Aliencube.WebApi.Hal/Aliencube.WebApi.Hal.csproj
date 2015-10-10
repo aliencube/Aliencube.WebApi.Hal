@@ -79,6 +79,7 @@
     <Compile Include="Resources\LinkedResourceCollection.cs" />
     <Compile Include="Resources\OptionalParameter.cs" />
     <Compile Include="Resources\OptionalParameterType.cs" />
+    <Compile Include="Swashbuckle\OperationNameFilter.cs" />
     <Compile Include="Swashbuckle\SchemaFilter.cs" />
   </ItemGroup>
   <ItemGroup />
