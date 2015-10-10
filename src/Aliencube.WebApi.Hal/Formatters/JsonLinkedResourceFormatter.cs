@@ -66,6 +66,33 @@ namespace Aliencube.WebApi.Hal.Formatters
                 return;
             }
 
+            this.WriteToStream(writeStream, effectiveEncoding, resource);
+        }
+
+        /// <summary>
+        /// Called during the <see cref="LinkedResource" /> serialisation.
+        /// </summary>
+        /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
+        /// <param name="objects">List of objects for serialisation.</param>
+        public override void OnSerialisingResource(LinkedResource resource, params object[] objects)
+        {
+            if (objects.Length > 2)
+            {
+                throw new InvalidOperationException("Too many parameters");
+            }
+
+            var writeStream = objects[0] as Stream;
+            if (writeStream == null)
+            {
+                throw new InvalidOperationException("Invalid parameter");
+            }
+
+            var effectiveEncoding = objects[1] as Encoding;
+            if (effectiveEncoding == null)
+            {
+                throw new InvalidOperationException("Invalid parameter");
+            }
+
             var parsedResource = this.ParseResource(resource);
             var parsedLinks = this.ParseLinks(resource);
 

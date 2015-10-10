@@ -85,6 +85,13 @@ namespace Aliencube.WebApi.Hal.Formatters
         }
 
         /// <summary>
+        /// Called during the <see cref="LinkedResource" /> serialisation.
+        /// </summary>
+        /// <param name="resource"><see cref="LinkedResource" /> instance.</param>
+        /// <param name="objects">List of objects for serialisation.</param>
+        public abstract void OnSerialisingResource(LinkedResource resource, params object[] objects);
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public virtual void Dispose()
@@ -95,6 +102,26 @@ namespace Aliencube.WebApi.Hal.Formatters
             }
 
             this._disposed = true;
+        }
+
+        protected void WriteToStream(Stream writeStream, Encoding effectiveEncoding, LinkedResource resource)
+        {
+            this.OnSerialisingResource(resource, writeStream, effectiveEncoding);
+        }
+
+        /// <summary>
+        /// Writes the JSON object to the stream with given encoding.
+        /// </summary>
+        /// <param name="resource">Parsed JSON object to write.</param>
+        /// <param name="stream"><see cref="Stream" /> instance.</param>
+        /// <param name="encoding"><see cref="Encoding" /> value.</param>
+        protected void WriteToStream(JToken resource, Stream stream, Encoding encoding)
+        {
+            var sw = new StreamWriter(stream, encoding);
+            var writer = new JsonTextWriter(sw);
+            resource.WriteTo(writer);
+            writer.Flush();
+            sw.Flush();
         }
 
         /// <summary>
@@ -155,21 +182,6 @@ namespace Aliencube.WebApi.Hal.Formatters
 
             parsed = ParseLinks(links);
             return parsed;
-        }
-
-        /// <summary>
-        /// Writes the JSON object to the stream with given encoding.
-        /// </summary>
-        /// <param name="resource">Parsed JSON object to write.</param>
-        /// <param name="stream"><see cref="Stream" /> instance.</param>
-        /// <param name="encoding"><see cref="Encoding" /> value.</param>
-        protected void WriteToStream(JToken resource, Stream stream, Encoding encoding)
-        {
-            var sw = new StreamWriter(stream, encoding);
-            var writer = new JsonTextWriter(sw);
-            resource.WriteTo(writer);
-            writer.Flush();
-            sw.Flush();
         }
 
         private static string SerialiseLink(Link link)
