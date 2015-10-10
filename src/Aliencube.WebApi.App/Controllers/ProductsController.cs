@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Web.Http;
 
 using Aliencube.WebApi.App.Helpers;
@@ -12,7 +11,7 @@ namespace Aliencube.WebApi.App.Controllers
     /// This represents the controller entity for product collection.
     /// </summary>
     [RoutePrefix("products")]
-    public class ProductsController : BaseController
+    public class ProductsController : BaseApiController
     {
         /// <summary>
         /// Gets the <see cref="Products" /> instance.

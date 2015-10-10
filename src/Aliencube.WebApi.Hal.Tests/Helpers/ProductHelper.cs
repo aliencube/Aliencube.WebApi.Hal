@@ -30,6 +30,20 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
                         {
                             new Link() { Rel = "find", Href = "/products{?id}" },
                             new Link() { Rel = "rel", Href = "/products" },
+                            new Link()
+                            {
+                                Rel = "optional",
+                                Href = "/products/optional",
+                                OptionalParameters =
+                                    new List<OptionalParameter>()
+                                    {
+                                        new OptionalParameter()
+                                        {
+                                            Key = OptionalParameterType.Title,
+                                            Value = "Sample Title"
+                                        }
+                                    },
+                            },
                         };
             product.AddLinks(links);
 

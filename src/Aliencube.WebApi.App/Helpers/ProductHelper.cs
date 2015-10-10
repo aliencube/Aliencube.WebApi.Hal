@@ -62,7 +62,7 @@ namespace Aliencube.WebApi.App.Helpers
         /// </returns>
         public static Product GetProduct(int productId)
         {
-            var product = GetProducts().SingleOrDefault(p => p.ProductId == productId);
+            var product = GetProducts().Items.SingleOrDefault(p => p.ProductId == productId);
             return product;
         }
     }
