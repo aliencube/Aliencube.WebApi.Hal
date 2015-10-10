@@ -40,7 +40,7 @@ namespace Aliencube.WebApi.Hal.Formatters
         /// <summary>
         /// Gets the <see cref="JsonSerializerSettings" /> value.
         /// </summary>
-        protected JsonSerializerSettings Settings { get; }
+        protected JsonSerializerSettings Settings { get; private set; }
 
         /// <summary>
         /// Creates the <see cref="IResourceFormatter" /> instance.
