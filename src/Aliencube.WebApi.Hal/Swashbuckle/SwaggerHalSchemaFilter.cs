@@ -9,7 +9,7 @@ namespace Aliencube.WebApi.Hal.Swashbuckle
     /// <summary>
     /// This represents the filter entity for HAL schema.
     /// </summary>
-    public class HalSchemaFilter : ISchemaFilter
+    public class SwaggerHalSchemaFilter : ISchemaFilter
     {
         /// <summary>
         /// Applies schema filter.
@@ -19,20 +19,19 @@ namespace Aliencube.WebApi.Hal.Swashbuckle
         /// <param name="type"><see cref="Type" /> instance.</param>
         public void Apply(Schema schema, SchemaRegistry schemaRegistry, Type type)
         {
-            if (FormatterHelper.IsLinkedResourceType(type))
-            {
-                schema.type = "object";
-                schema.properties.Clear();
-                schema.additionalProperties = new Schema() { type = "object" };
-                schema.example = new { self = new { rel = "self", href = "uri" } };
-            }
-
             if (FormatterHelper.IsLinkedResourceCollectionType(type))
             {
                 schema.type = "object";
-                schema.properties.Clear();
+                //schema.properties.Clear();
                 schema.additionalProperties = new Schema() { type = "object" };
                 schema.example = new { item = new { }, item2 = new { } };
+            }
+            else if (FormatterHelper.IsLinkedResourceType(type))
+            {
+                schema.type = "object";
+                //schema.properties.Clear();
+                schema.additionalProperties = new Schema() { type = "object" };
+                schema.example = new { self = new { rel = "self", href = "uri" } };
             }
         }
     }

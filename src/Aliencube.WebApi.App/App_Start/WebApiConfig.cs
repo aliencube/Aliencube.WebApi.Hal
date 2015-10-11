@@ -50,6 +50,9 @@ namespace Aliencube.WebApi.App
             // Formatters
             config.ConfigHalFormatter();
 
+            // Swagger
+            config.ConfigSwagger();
+
             builder.UseWebApi(config);
         }
     }

@@ -2,30 +2,33 @@ using System;
 using System.IO;
 using System.Web.Http;
 
-using Aliencube.WebApi.App;
 using Aliencube.WebApi.Hal.Swashbuckle;
 
 using Swashbuckle.Application;
 
-using WebActivatorEx;
-
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+//[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace Aliencube.WebApi.App
 {
     /// <summary>
     /// This represents the config entity for Swagger.
     /// </summary>
-    public class SwaggerConfig
+    public static class SwaggerConfig
     {
         /// <summary>
         /// Registers the Swagger settings.
         /// </summary>
-        public static void Register()
+        /// <param name="config">The <see cref="HttpConfiguration" /> instance.</param>
+        public static void ConfigSwagger(this HttpConfiguration config)
+        {
+            Register(config);
+        }
+
+        private static void Register(HttpConfiguration config)
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
-            GlobalConfiguration.Configuration
+            config
                 .EnableSwagger(c =>
                     {
                         // By default, the service root url is inferred from the request used to access the docs.
@@ -127,7 +130,7 @@ namespace Aliencube.WebApi.App
                         // specific type, you can wire up one or more Schema filters.
                         //
                         //c.SchemaFilter<ApplySchemaVendorExtensions>();
-                        c.SchemaFilter<HalSchemaFilter>();
+                        c.SchemaFilter<SwaggerHalSchemaFilter>();
 
                         // Set this flag to omit schema property descriptions for any type properties decorated with the
                         // Obsolete attribute
@@ -162,7 +165,7 @@ namespace Aliencube.WebApi.App
                         //c.OperationFilter<AssignOAuth2SecurityRequirements>();
 
                         // http://blog.greatrexpectations.com/2015/03/18/custom-operation-names-with-swashbuckle-5-0/
-                        c.OperationFilter<OperationNameFilter>();
+                        c.OperationFilter<SwaggerOperationFilter>();
 
                         // Post-modify the entire Swagger document by wiring up one or more Document filters.
                         // This gives full control to modify the final SwaggerDocument. You should have a good understanding of
@@ -243,9 +246,9 @@ namespace Aliencube.WebApi.App
         /// <returns>
         /// Returns the location of the XML documentation.
         /// </returns>
-        protected static string GetXmlCommentsPath()
+        private static string GetXmlCommentsPath()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\bin\Aliencube.WebApi.App.XML");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"bin\Aliencube.WebApi.App.XML");
             return path;
         }
     }
