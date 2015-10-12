@@ -5,23 +5,23 @@ using Newtonsoft.Json;
 namespace Aliencube.WebApi.Hal.Resources
 {
     /// <summary>
-    /// This represents the entity for resources containing links. This must be inherited.
+    /// This represents the entity for HAL resource. This must be inherited.
     /// </summary>
-    public abstract class LinkedResource
+    public abstract class HalResource
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="LinkedResource" /> class.
+        /// Initialises a new instance of the <see cref="HalResource" /> class.
         /// </summary>
-        protected LinkedResource()
+        protected HalResource()
         {
-            this.Links = new List<Link>();
+            this.Links = new LinkCollection();
         }
 
         /// <summary>
         /// Gets the list of <see cref="Link" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_links")]
-        public List<Link> Links { get; }
+        public LinkCollection Links { get; }
 
         /// <summary>
         /// Gets the list of <see cref="LinkedResource" /> objects.
