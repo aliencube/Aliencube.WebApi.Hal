@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Aliencube.WebApi.Hal.Resources
 {
@@ -18,15 +16,15 @@ namespace Aliencube.WebApi.Hal.Resources
         }
 
         /// <summary>
-        /// Gets the list of <see cref="Link" /> objects.
+        /// Gets the <see cref="LinkCollection" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_links")]
         public LinkCollection Links { get; }
 
         /// <summary>
-        /// Gets the list of <see cref="LinkedResource" /> objects.
+        /// Gets the <see cref="HalResourceCollection" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_embedded")]
-        public List<LinkedResource> Embedded { get; }
+        public HalResourceCollection Embedded { get; }
     }
 }

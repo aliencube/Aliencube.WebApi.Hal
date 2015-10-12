@@ -12,7 +12,7 @@ namespace Aliencube.WebApi.Hal.Converters
     /// <summary>
     /// This represents the converter entity for the <see cref="LinkedResource" /> class.
     /// </summary>
-    public class LinkedResourceConverter : JsonConverter
+    public class LinkCollectionConverter : JsonConverter
     {
         private static readonly IEqualityComparer<Link> ComparerInstance = new LinkEqualityComparer();
 
@@ -42,7 +42,7 @@ namespace Aliencube.WebApi.Hal.Converters
         public override bool CanConvert(Type objectType)
         {
             var result = typeof (IList<Link>).IsAssignableFrom(objectType) ||
-                         typeof (LinkedResource).IsAssignableFrom(objectType);
+                         typeof (LinkCollection).IsAssignableFrom(objectType);
             return result;
         }
 
@@ -70,9 +70,9 @@ namespace Aliencube.WebApi.Hal.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var collection = new List<Link>();
-            if (value is LinkedResource)
+            if (value is LinkCollection)
             {
-                collection = ((LinkedResource)value).Links;
+                collection = ((LinkCollection)value).Items;
             }
 
             var links = new HashSet<Link>(collection, EqualityComparer);

@@ -21,7 +21,7 @@ namespace Aliencube.WebApi.Hal.Resources
         /// <param name="links">List of the <see cref="Link" /> objects to add.</param>
         public LinkCollection(List<Link> links)
         {
-            this.Items = new List<Link>();
+            this.Items = links;
         }
 
         /// <summary>
