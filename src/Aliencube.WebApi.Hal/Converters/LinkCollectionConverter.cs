@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Aliencube.WebApi.Hal.Converters
 {
     /// <summary>
-    /// This represents the converter entity for the <see cref="LinkedResource" /> class.
+    /// This represents the converter entity for the <see cref="LinkCollection" /> class.
     /// </summary>
     public class LinkCollectionConverter : JsonConverter
     {
@@ -41,8 +41,8 @@ namespace Aliencube.WebApi.Hal.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            var result = typeof (IList<Link>).IsAssignableFrom(objectType) ||
-                         typeof (LinkCollection).IsAssignableFrom(objectType);
+            var result = typeof(IList<Link>).IsAssignableFrom(objectType) ||
+                         typeof(LinkCollection).IsAssignableFrom(objectType);
             return result;
         }
 
@@ -52,11 +52,11 @@ namespace Aliencube.WebApi.Hal.Converters
         /// <param name="reader">The <see cref="JsonReader" /> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
         /// <param name="existingValue">The existing value of object being read.</param>
-        /// <param name="serializer">The calling serializer.</param>
+        /// <param name="serialiser">The calling serialiser.</param>
         /// <returns>
         /// Returns the object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serialiser)
         {
             return reader.Value;
         }
@@ -66,8 +66,8 @@ namespace Aliencube.WebApi.Hal.Converters
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <param name="serialiser">The calling serialiser.</param>
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serialiser)
         {
             var collection = new List<Link>();
             if (value is LinkCollection)
@@ -148,10 +148,11 @@ namespace Aliencube.WebApi.Hal.Converters
                             writer.WritePropertyName("templated");
                             writer.WriteValue(true);
                         }
+
                         break;
 
                     default:
-                        if ((info.PropertyType == typeof(string)))
+                        if (info.PropertyType == typeof(string))
                         {
                             var text = info.GetValue(link) as string;
 
@@ -163,6 +164,7 @@ namespace Aliencube.WebApi.Hal.Converters
                             writer.WritePropertyName(info.Name.ToLowerInvariant());
                             writer.WriteValue(text);
                         }
+
                         // else: no sensible way to serialize ...
                         break;
                 }

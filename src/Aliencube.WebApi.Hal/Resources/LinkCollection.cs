@@ -27,7 +27,7 @@ namespace Aliencube.WebApi.Hal.Resources
         /// <summary>
         /// Gets the list of <see cref="Link" /> items.
         /// </summary>
-        public List<Link> Items { get; }
+        public List<Link> Items { get; private set; }
 
         /// <summary>
         /// Adds the <see cref="Link" /> object to the collection.

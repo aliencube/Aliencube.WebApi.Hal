@@ -62,6 +62,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configs\HalFormatterConfig.cs" />
+    <Compile Include="Converters\HalResourceCollectionConverter.cs" />
+    <Compile Include="Converters\HalResourceEqualityComparer.cs" />
     <Compile Include="Converters\LinkCollectionConverter.cs" />
     <Compile Include="Converters\LinkEqualityComparer.cs" />
     <Compile Include="Extensions\LinkedResourceExtensions.cs" />
@@ -81,10 +83,6 @@
     <Compile Include="Resources\HalResource.cs" />
     <Compile Include="Resources\Link.cs" />
     <Compile Include="Resources\LinkCollection.cs" />
-    <Compile Include="Resources\LinkedResource.cs" />
-    <Compile Include="Resources\LinkedResourceCollection.cs" />
-    <Compile Include="Resources\OptionalParameter.cs" />
-    <Compile Include="Resources\OptionalParameterType.cs" />
     <Compile Include="Swashbuckle\SwaggerOperationAttribute.cs" />
     <Compile Include="Swashbuckle\SwaggerOperationFilter.cs" />
     <Compile Include="Swashbuckle\SwaggerHalSchemaFilter.cs" />

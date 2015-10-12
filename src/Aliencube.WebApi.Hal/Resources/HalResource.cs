@@ -16,15 +16,27 @@ namespace Aliencube.WebApi.Hal.Resources
         }
 
         /// <summary>
+        /// Gets or sets the relation of the <see cref="HalResource" />.
+        /// </summary>
+        [JsonIgnore]
+        public string Rel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the href value of the <see cref="HalResource" />.
+        /// </summary>
+        [JsonIgnore]
+        public string Href { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="LinkCollection" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_links")]
-        public LinkCollection Links { get; }
+        public LinkCollection Links { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="HalResourceCollection" /> objects.
+        /// Gets or sets the <see cref="HalResourceCollection" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_embedded")]
-        public HalResourceCollection Embedded { get; }
+        public HalResourceCollection Embedded { get; set; }
     }
 }

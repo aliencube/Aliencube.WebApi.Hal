@@ -14,9 +14,9 @@ namespace Aliencube.WebApi.Hal.Converters
         /// Check whether both given links are equal to each other or not.
         /// </summary>
         /// <param name="l1">First <see cref="Link" /> instance.</param>
-        /// <param name="l2">Secod <see cref="Link" /> instance. </param>
+        /// <param name="l2">Second <see cref="Link" /> instance. </param>
         /// <returns>
-        /// Returns <c>True</c>, if both links are the same as each other; oterwise returns <c>False</c>.
+        /// Returns <c>True</c>, if both links are the same as each other; otherwise returns <c>False</c>.
         /// </returns>
         public bool Equals(Link l1, Link l2)
         {
@@ -26,10 +26,10 @@ namespace Aliencube.WebApi.Hal.Converters
         }
 
         /// <summary>
-        /// Gets hashcode of the <see cref="Link" /> instance.
+        /// Gets hash code of the <see cref="Link" /> instance.
         /// </summary>
         /// <param name="lnk">The <see cref="Link" /> instance.</param>
-        /// <returns>Returns the hashcode generated.</returns>
+        /// <returns>Returns the hash code generated.</returns>
         public int GetHashCode(Link lnk)
         {
             var str = (string.IsNullOrEmpty(lnk.Rel) ? "norel" : lnk.Rel) + "~" + (string.IsNullOrEmpty(lnk.Href) ? "nohref" : lnk.Href);
