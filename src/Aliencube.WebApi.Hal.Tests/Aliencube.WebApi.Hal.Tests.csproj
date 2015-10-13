@@ -84,15 +84,11 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="HalJsonMediaTypeFormatterTest.cs" />
-    <Compile Include="HalXmlMediaTypeFormatterTest.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Helpers\ProductHelper.cs" />
-    <Compile Include="JsonLinkedResourceCollectionFormatterTest.cs" />
-    <Compile Include="JsonLinkedResourceFormatterTest.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlLinkedResourceFormatterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

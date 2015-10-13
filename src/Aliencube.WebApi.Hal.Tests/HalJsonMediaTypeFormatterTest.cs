@@ -34,7 +34,9 @@ namespace Aliencube.WebApi.Hal.Tests
                                   SerializerSettings =
                                   {
                                       ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                      ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                      MissingMemberHandling = MissingMemberHandling.Ignore,
+                                      ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                                      NullValueHandling = NullValueHandling.Ignore,
                                   }
                               };
         }
@@ -47,39 +49,39 @@ namespace Aliencube.WebApi.Hal.Tests
         {
         }
 
-        /// <summary>
-        /// Tests whether the given type can be read or not.
-        /// </summary>
-        [Test]
-        public void GivenTypeShouldBeAbleToRead()
-        {
-            var product = ProductHelper.GetProduct(1);
+        ///// <summary>
+        ///// Tests whether the given type can be read or not.
+        ///// </summary>
+        //[Test]
+        //public void GivenTypeShouldBeAbleToRead()
+        //{
+        //    var product = ProductHelper.GetProduct(1);
 
-            var result = this._formatter.CanReadType(product.GetType());
-            result.Should().BeTrue();
+        //    var result = this._formatter.CanReadType(product.GetType());
+        //    result.Should().BeTrue();
 
-            var products = ProductHelper.GetProducts(2);
+        //    var products = ProductHelper.GetProducts(2);
 
-            result = this._formatter.CanReadType(products.GetType());
-            result.Should().BeTrue();
-        }
+        //    result = this._formatter.CanReadType(products.GetType());
+        //    result.Should().BeTrue();
+        //}
 
-        /// <summary>
-        /// Tests whether the given type can be written or not.
-        /// </summary>
-        [Test]
-        public void GivenTypeShouldBeAbleToWrite()
-        {
-            var product = ProductHelper.GetProduct(1);
+        ///// <summary>
+        ///// Tests whether the given type can be written or not.
+        ///// </summary>
+        //[Test]
+        //public void GivenTypeShouldBeAbleToWrite()
+        //{
+        //    var product = ProductHelper.GetProduct(1);
 
-            var result = this._formatter.CanWriteType(product.GetType());
-            result.Should().BeTrue();
+        //    var result = this._formatter.CanWriteType(product.GetType());
+        //    result.Should().BeTrue();
 
-            var products = ProductHelper.GetProducts(2);
+        //    var products = ProductHelper.GetProducts(2);
 
-            result = this._formatter.CanWriteType(products.GetType());
-            result.Should().BeTrue();
-        }
+        //    result = this._formatter.CanWriteType(products.GetType());
+        //    result.Should().BeTrue();
+        //}
 
         /// <summary>
         /// Tests whether the given product returns JSON objects formatted in HAL.
@@ -94,17 +96,17 @@ namespace Aliencube.WebApi.Hal.Tests
                 this._formatter.WriteToStream(typeof(Product), product, stream, Encoding.UTF8);
                 var jo = FormatterHelper.ParseJsonStream(stream);
 
-                var links = jo.SelectToken("_links");
-                links.Should().NotBeNullOrEmpty();
-
-                var self = links.SelectToken("self");
-                self.Should().NotBeNullOrEmpty();
-
-                var embedded = jo.SelectToken("_embedded");
-                embedded.Should().BeNullOrEmpty();
+                var rel = jo.SelectToken("rel");
+                rel.Should().BeNullOrEmpty();
 
                 var href = jo.SelectToken("href");
                 href.Should().BeNullOrEmpty();
+
+                var links = jo.SelectToken("_links");
+                links.Should().NotBeNullOrEmpty();
+
+                var embedded = jo.SelectToken("_embedded");
+                embedded.Should().BeNullOrEmpty();
             }
         }
 
@@ -121,18 +123,18 @@ namespace Aliencube.WebApi.Hal.Tests
                 this._formatter.WriteToStream(typeof(Products), products, stream, Encoding.UTF8);
                 var jo = FormatterHelper.ParseJsonStream(stream);
 
+                var rel = jo.SelectToken("rel");
+                rel.Should().BeNullOrEmpty();
+
+                var href = jo.SelectToken("href");
+                href.Should().BeNullOrEmpty();
+
                 var links = jo.SelectToken("_links");
                 links.Should().NotBeNullOrEmpty();
-
-                var self = links.SelectToken("self");
-                self.Should().NotBeNullOrEmpty();
 
                 var embedded = jo.SelectToken("_embedded");
                 embedded.Should().NotBeNullOrEmpty();
                 embedded.Count().Should().Be(2);
-
-                var href = jo.SelectToken("href");
-                href.Should().BeNullOrEmpty();
             }
         }
     }

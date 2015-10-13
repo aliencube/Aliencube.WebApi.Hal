@@ -26,17 +26,19 @@ namespace Aliencube.WebApi.Hal.Configs
                                                                  {
                                                                      ContractResolver = new CamelCasePropertyNamesContractResolver(),
                                                                      MissingMemberHandling = MissingMemberHandling.Ignore,
+                                                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                                                                     NullValueHandling = NullValueHandling.Ignore,
                                                                  },
                                     };
 
-            var xmlFormatter = new HalXmlMediaTypeFormatter()
-                                   {
-                                       Namespace = "http://schema.aliencube.org/xml/2015/08/hal",
-                                   };
+            //var xmlFormatter = new HalXmlMediaTypeFormatter()
+            //                       {
+            //                           Namespace = "http://schema.aliencube.org/xml/2015/08/hal",
+            //                       };
 
             config.Formatters.Remove(config.Formatters.JsonFormatter);
             config.Formatters.Insert(0, jsonFormatter);
-            config.Formatters.Insert(1, xmlFormatter);
+            //config.Formatters.Insert(1, xmlFormatter);
         }
     }
 }

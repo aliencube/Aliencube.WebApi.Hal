@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Aliencube.WebApi.Hal.Resources;
 
@@ -11,16 +9,16 @@ using Newtonsoft.Json;
 namespace Aliencube.WebApi.Hal.Converters
 {
     /// <summary>
-    /// This represents the converter entity for the <see cref="HalResourceCollection" /> class.
+    /// This represents the converter entity for the <see cref="LinkedResourceCollection" /> class.
     /// </summary>
-    public class HalResourceCollectionConverter : JsonConverter
+    public class LinkedResourceCollectionConverter : JsonConverter
     {
-        private static readonly IEqualityComparer<HalResource> ComparerInstance = new HalResourceEqualityComparer();
+        private static readonly IEqualityComparer<LinkedResource> ComparerInstance = new LinkedResourceEqualityComparer();
 
         /// <summary>
         /// Gets the <see cref="LinkEqualityComparer" /> instance.
         /// </summary>
-        public static IEqualityComparer<HalResource> EqualityComparer
+        public static IEqualityComparer<LinkedResource> EqualityComparer
         {
             get { return ComparerInstance; }
         }
@@ -42,8 +40,8 @@ namespace Aliencube.WebApi.Hal.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            var result = typeof(IList<HalResource>).IsAssignableFrom(objectType) ||
-                         typeof(HalResourceCollection).IsAssignableFrom(objectType);
+            var result = typeof(IList<LinkedResource>).IsAssignableFrom(objectType) ||
+                         typeof(LinkedResourceCollection).IsAssignableFrom(objectType);
             return result;
         }
 
@@ -70,13 +68,13 @@ namespace Aliencube.WebApi.Hal.Converters
         /// <param name="serialiser">The calling serialiser.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serialiser)
         {
-            var collection = new List<HalResource>();
-            if (value is HalResourceCollection)
+            var collection = new List<LinkedResource>();
+            if (value is LinkedResourceCollection)
             {
-                collection = ((HalResourceCollection)value).Items;
+                collection = ((LinkedResourceCollection)value).Items;
             }
 
-            var resources = new HashSet<HalResource>(collection, EqualityComparer);
+            var resources = new HashSet<LinkedResource>(collection, EqualityComparer);
             var lookup = resources.ToLookup(p => p.Rel);
 
             if (lookup.Count == 0)
@@ -84,22 +82,18 @@ namespace Aliencube.WebApi.Hal.Converters
                 return;
             }
 
-            writer.WriteStartObject();
-
             foreach (var rel in lookup)
             {
                 var count = rel.Count();
-
-                writer.WritePropertyName(rel.Key);
 
                 if (count > 1)
                 {
                     writer.WriteStartArray();
                 }
 
-                foreach (var er in rel)
+                foreach (var r in rel)
                 {
-                    serialiser.Serialize(writer, er);
+                    serialiser.Serialize(writer, r);
                 }
 
                 if (count > 1)
@@ -107,8 +101,6 @@ namespace Aliencube.WebApi.Hal.Converters
                     writer.WriteEndArray();
                 }
             }
-
-            writer.WriteEndObject();
         }
     }
 }

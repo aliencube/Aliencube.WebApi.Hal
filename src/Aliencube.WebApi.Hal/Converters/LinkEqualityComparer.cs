@@ -20,21 +20,23 @@ namespace Aliencube.WebApi.Hal.Converters
         /// </returns>
         public bool Equals(Link l1, Link l2)
         {
-            var result = string.Compare(l1.Href, l2.Href, StringComparison.OrdinalIgnoreCase) == 0 &&
-                         string.Compare(l1.Rel, l2.Rel, StringComparison.OrdinalIgnoreCase) == 0;
+            var result = string.Equals(l1.Rel, l2.Rel, StringComparison.InvariantCultureIgnoreCase) &&
+                         string.Equals(l1.Href, l2.Href, StringComparison.InvariantCultureIgnoreCase);
             return result;
         }
 
         /// <summary>
         /// Gets hash code of the <see cref="Link" /> instance.
         /// </summary>
-        /// <param name="lnk">The <see cref="Link" /> instance.</param>
+        /// <param name="link">The <see cref="Link" /> instance.</param>
         /// <returns>Returns the hash code generated.</returns>
-        public int GetHashCode(Link lnk)
+        public int GetHashCode(Link link)
         {
-            var str = (string.IsNullOrEmpty(lnk.Rel) ? "norel" : lnk.Rel) + "~" + (string.IsNullOrEmpty(lnk.Href) ? "nohref" : lnk.Href);
-            var h = str.GetHashCode();
-            return h;
+            var norel = string.IsNullOrWhiteSpace(link.Rel) ? "norel" : link.Rel;
+            var nohref = string.IsNullOrWhiteSpace(link.Href) ? "nohref" : link.Href;
+            var joined = string.Join("~", norel, nohref);
+            var hash = joined.GetHashCode();
+            return hash;
         }
     }
 }

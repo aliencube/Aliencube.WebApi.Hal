@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Aliencube.WebApi.Hal.Resources
 {
     /// <summary>
-    /// This represents the entity for resources containing links. This must be inherited.
+    /// This represents the entity for HAL resource. This must be inherited.
     /// </summary>
     public abstract class LinkedResource
     {
@@ -14,19 +12,31 @@ namespace Aliencube.WebApi.Hal.Resources
         /// </summary>
         protected LinkedResource()
         {
-            this.Links = new List<Link>();
+            this.Links = new LinkCollection();
         }
 
         /// <summary>
-        /// Gets the list of <see cref="Link" /> objects.
+        /// Gets or sets the relation of the <see cref="LinkedResource" />.
         /// </summary>
-        [JsonProperty(PropertyName = "_links")]
-        public List<Link> Links { get; }
+        [JsonIgnore]
+        public string Rel { get; set; }
 
         /// <summary>
-        /// Gets the list of <see cref="LinkedResource" /> objects.
+        /// Gets or sets the href value of the <see cref="LinkedResource" />.
+        /// </summary>
+        [JsonIgnore]
+        public string Href { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="LinkCollection" /> objects.
+        /// </summary>
+        [JsonProperty(PropertyName = "_links")]
+        public LinkCollection Links { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="LinkedResourceCollection" /> objects.
         /// </summary>
         [JsonProperty(PropertyName = "_embedded")]
-        public List<LinkedResource> Embedded { get; }
+        public LinkedResourceCollection Embedded { get; set; }
     }
 }

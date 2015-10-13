@@ -76,7 +76,7 @@ namespace Aliencube.WebApi.Hal.Converters
             }
 
             var links = new HashSet<Link>(collection, EqualityComparer);
-            var lookup = links.ToLookup(l => l.Rel);
+            var lookup = links.ToLookup(p => p.Rel);
 
             if (lookup.Count == 0)
             {

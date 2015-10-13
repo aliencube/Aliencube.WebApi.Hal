@@ -62,32 +62,22 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configs\HalFormatterConfig.cs" />
-    <Compile Include="Converters\HalResourceCollectionConverter.cs" />
-    <Compile Include="Converters\HalResourceEqualityComparer.cs" />
+    <Compile Include="Converters\LinkedResourceCollectionConverter.cs" />
+    <Compile Include="Converters\LinkedResourceEqualityComparer.cs" />
     <Compile Include="Converters\LinkCollectionConverter.cs" />
     <Compile Include="Converters\LinkEqualityComparer.cs" />
-    <Compile Include="Extensions\LinkedResourceExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Formatters\HalJsonMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\HalXmlMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\IResourceFormatter.cs" />
-    <Compile Include="Formatters\JsonLinkedResourceFormatter.cs" />
-    <Compile Include="Formatters\JsonResourceFormatter.cs" />
-    <Compile Include="Formatters\JsonLinkedResourceCollectionFormatter.cs" />
-    <Compile Include="Formatters\XmlLinkedResourceCollectionFormatter.cs" />
-    <Compile Include="Formatters\XmlLinkedResourceFormatter.cs" />
-    <Compile Include="Formatters\XmlResourceFormatter.cs" />
-    <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\HalResourceCollection.cs" />
-    <Compile Include="Resources\HalResource.cs" />
     <Compile Include="Resources\Link.cs" />
     <Compile Include="Resources\LinkCollection.cs" />
-    <Compile Include="Swashbuckle\SwaggerOperationAttribute.cs" />
-    <Compile Include="Swashbuckle\SwaggerOperationFilter.cs" />
-    <Compile Include="Swashbuckle\SwaggerHalSchemaFilter.cs" />
+    <Compile Include="Resources\LinkedResource.cs" />
+    <Compile Include="Resources\LinkedResourceCollection.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Swashbuckle\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Aliencube.WebApi.Hal.nuspec" />
     <None Include="App.config" />
