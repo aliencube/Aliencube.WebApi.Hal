@@ -18,12 +18,12 @@ namespace Aliencube.WebApi.Hal.Tests.Helpers
         public static Product GetProduct(int productId)
         {
             var product = new Product()
-            {
-                ProductId = productId,
-                Name = string.Format("Product{0}", productId),
-                Description = string.Format("Product Description {0}", productId),
-                Href = string.Format("/products/{0}", productId),
-            };
+                          {
+                              ProductId = productId,
+                              Name = string.Format("Product{0}", productId),
+                              Description = string.Format("Product Description {0}", productId),
+                              Href = string.Format("/products/{0}", productId),
+                          };
 
             var links = new List<Link>()
                         {
