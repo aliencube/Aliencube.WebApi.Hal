@@ -2,7 +2,7 @@
 using System.Linq;
 
 using Aliencube.WebApi.App.Models;
-using Aliencube.WebApi.Hal.Resources;
+using Aliencube.WebApi.App.Resources;
 
 namespace Aliencube.WebApi.App.Helpers
 {
@@ -29,11 +29,6 @@ namespace Aliencube.WebApi.App.Helpers
                                     Name = "ABC",
                                     Description = "Product ABC",
                                     Href = "/product/1",
-                                    Links =
-                                        {
-                                            new Link() { Rel = "collection", Href = "/products" },
-                                            new Link() { Rel = "template", Href = "/product/{productId}" },
-                                        }
                                 },
                             new Product()
                                 {
@@ -41,13 +36,20 @@ namespace Aliencube.WebApi.App.Helpers
                                     Name = "XYZ",
                                     Description = "Product XYZ",
                                     Href = "/product/2",
-                                    Links =
-                                        {
-                                            new Link() { Rel = "collection", Href = "/products" },
-                                            new Link() { Rel = "template", Href = "/product/{productId}" },
-                                        }
                                 },
                         });
+
+            var links = new List<Link>()
+                        {
+                            new Link() { Rel = "collection", Href = "/products" },
+                            new Link() { Rel = "template", Href = "/product/{productId}" },
+                        };
+
+            foreach (var product in products.Embedded.Items)
+            {
+                product.Links.AddRange(links);
+            }
+
             return products;
         }
 
@@ -62,7 +64,7 @@ namespace Aliencube.WebApi.App.Helpers
         /// </returns>
         public static Product GetProduct(int productId)
         {
-            var product = GetProducts().Items.SingleOrDefault(p => p.ProductId == productId);
+            var product = GetProducts().Embedded.Items.OfType<Product>().SingleOrDefault(p => p.ProductId == productId);
             return product;
         }
     }

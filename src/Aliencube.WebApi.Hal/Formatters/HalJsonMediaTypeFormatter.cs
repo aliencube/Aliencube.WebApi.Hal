@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 
-using Aliencube.WebApi.Hal.Converters;
+using Aliencube.WebApi.App.Converters;
 
-namespace Aliencube.WebApi.Hal.Formatters
+namespace Aliencube.WebApi.App.Formatters
 {
     /// <summary>
     /// This represents the formatter entity to support JSON response format with HAL.

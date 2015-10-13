@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 using Newtonsoft.Json.Linq;
 
-namespace Aliencube.WebApi.Hal.Tests.Helpers
+namespace Aliencube.WebApi.App.Tests.Helpers
 {
     /// <summary>
     /// This represents the helper entity for formatter.

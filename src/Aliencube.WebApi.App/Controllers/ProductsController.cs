@@ -2,8 +2,7 @@ using System.Web.Http;
 
 using Aliencube.WebApi.App.Helpers;
 using Aliencube.WebApi.App.Models;
-using Aliencube.WebApi.Hal.Extensions;
-using Aliencube.WebApi.Hal.Resources;
+using Aliencube.WebApi.App.Resources;
 
 namespace Aliencube.WebApi.App.Controllers
 {
@@ -25,8 +24,8 @@ namespace Aliencube.WebApi.App.Controllers
             var products = ProductHelper.GetProducts();
 
             products.Href = this.Request.RequestUri.PathAndQuery;
-            products.AddLink(new Link() { Rel = "next", Href = "/products?p=2" });
-            products.AddLink(new Link() { Rel = "template", Href = "/product/{productId}" });
+            products.Links.Add(new Link() { Rel = "next", Href = "/products?p=2" });
+            products.Links.Add(new Link() { Rel = "template", Href = "/product/{productId}" });
 
             return products;
         }

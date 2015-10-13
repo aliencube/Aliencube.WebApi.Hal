@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using Aliencube.WebApi.Hal.Resources;
+using Aliencube.WebApi.App.Resources;
 
-namespace Aliencube.WebApi.Hal.Converters
+namespace Aliencube.WebApi.App.Converters
 {
     /// <summary>
     /// This represents the equality comparer entity for <see cref="LinkedResource" />.

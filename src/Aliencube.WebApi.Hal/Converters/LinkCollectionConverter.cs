@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Aliencube.WebApi.Hal.Resources;
+using Aliencube.WebApi.App.Resources;
 
 using Newtonsoft.Json;
 
-namespace Aliencube.WebApi.Hal.Converters
+namespace Aliencube.WebApi.App.Converters
 {
     /// <summary>
     /// This represents the converter entity for the <see cref="LinkCollection" /> class.
@@ -29,7 +29,10 @@ namespace Aliencube.WebApi.Hal.Converters
         /// </summary>
         public override bool CanRead
         {
-            get { return false; }
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>

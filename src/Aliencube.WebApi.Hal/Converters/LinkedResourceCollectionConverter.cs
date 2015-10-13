@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Aliencube.WebApi.Hal.Resources;
+using Aliencube.WebApi.App.Resources;
 
 using Newtonsoft.Json;
 
-namespace Aliencube.WebApi.Hal.Converters
+namespace Aliencube.WebApi.App.Converters
 {
     /// <summary>
     /// This represents the converter entity for the <see cref="LinkedResourceCollection" /> class.

@@ -1,4 +1,4 @@
-﻿namespace Aliencube.WebApi.Hal.Resources
+﻿namespace Aliencube.WebApi.App.Resources
 {
     /// <summary>
     /// This represents the entity for link.

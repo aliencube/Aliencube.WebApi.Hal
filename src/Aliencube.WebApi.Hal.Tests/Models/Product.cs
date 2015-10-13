@@ -1,6 +1,6 @@
-﻿using Aliencube.WebApi.Hal.Resources;
+﻿using Aliencube.WebApi.App.Resources;
 
-namespace Aliencube.WebApi.Hal.Tests.Models
+namespace Aliencube.WebApi.App.Tests.Models
 {
     /// <summary>
     /// This represents the entity for product.

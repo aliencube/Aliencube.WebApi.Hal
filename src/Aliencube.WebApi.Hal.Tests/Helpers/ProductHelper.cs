@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using Aliencube.WebApi.Hal.Resources;
-using Aliencube.WebApi.Hal.Tests.Models;
+using Aliencube.WebApi.App.Resources;
+using Aliencube.WebApi.App.Tests.Models;
 
-namespace Aliencube.WebApi.Hal.Tests.Helpers
+namespace Aliencube.WebApi.App.Tests.Helpers
 {
     /// <summary>
     /// This represents the helper entity for product.

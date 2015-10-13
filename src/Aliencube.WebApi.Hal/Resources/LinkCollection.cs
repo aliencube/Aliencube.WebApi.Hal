@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Aliencube.WebApi.Hal.Resources
+namespace Aliencube.WebApi.App.Resources
 {
     /// <summary>
     /// This represents the collection entity for the <see cref="Link" /> class.

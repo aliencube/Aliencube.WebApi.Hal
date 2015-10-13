@@ -1,4 +1,4 @@
-﻿using Aliencube.WebApi.Hal.Resources;
+﻿using Aliencube.WebApi.App.Resources;
 
 namespace Aliencube.WebApi.App.Models
 {

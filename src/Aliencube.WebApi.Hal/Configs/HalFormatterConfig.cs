@@ -1,11 +1,11 @@
 ﻿using System.Web.Http;
 
-using Aliencube.WebApi.Hal.Formatters;
+using Aliencube.WebApi.App.Formatters;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Aliencube.WebApi.Hal.Configs
+namespace Aliencube.WebApi.App.Configs
 {
     /// <summary>
     /// This represents the extension entity for HAL formatter configuration.
@@ -35,9 +35,11 @@ namespace Aliencube.WebApi.Hal.Configs
             //                       {
             //                           Namespace = "http://schema.aliencube.org/xml/2015/08/hal",
             //                       };
-
-            config.Formatters.Remove(config.Formatters.JsonFormatter);
-            config.Formatters.Insert(0, jsonFormatter);
+            
+            config.Formatters.Clear();
+            config.Formatters.Add(jsonFormatter);
+            //config.Formatters.Remove(config.Formatters.JsonFormatter);
+            //config.Formatters.Insert(0, jsonFormatter);
             //config.Formatters.Insert(1, xmlFormatter);
         }
     }

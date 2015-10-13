@@ -3,7 +3,7 @@ using System.Linq;
 
 using Newtonsoft.Json;
 
-namespace Aliencube.WebApi.Hal.Resources
+namespace Aliencube.WebApi.App.Resources
 {
     /// <summary>
     /// This represents the entity for HAL resource. This must be inherited.

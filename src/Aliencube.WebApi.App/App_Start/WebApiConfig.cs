@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 
-using Aliencube.WebApi.Hal.Configs;
+using Aliencube.WebApi.App.Configs;
 
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -51,7 +51,7 @@ namespace Aliencube.WebApi.App
             config.ConfigHalFormatter();
 
             // Swagger
-            config.ConfigSwagger();
+            //config.ConfigSwagger();
 
             builder.UseWebApi(config);
         }

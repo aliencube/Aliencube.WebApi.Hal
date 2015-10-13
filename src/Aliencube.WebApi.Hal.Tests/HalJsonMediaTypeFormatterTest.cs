@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text;
 
-using Aliencube.WebApi.Hal.Formatters;
-using Aliencube.WebApi.Hal.Tests.Helpers;
-using Aliencube.WebApi.Hal.Tests.Models;
+using Aliencube.WebApi.App.Formatters;
+using Aliencube.WebApi.App.Tests.Helpers;
+using Aliencube.WebApi.App.Tests.Models;
 
 using FluentAssertions;
 
@@ -13,7 +13,7 @@ using Newtonsoft.Json.Serialization;
 
 using NUnit.Framework;
 
-namespace Aliencube.WebApi.Hal.Tests
+namespace Aliencube.WebApi.App.Tests
 {
     /// <summary>
     /// This represents the test entity for the <see cref="HalJsonMediaTypeFormatter" /> class.
