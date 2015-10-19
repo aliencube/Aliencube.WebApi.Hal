@@ -1,5 +1,9 @@
 # Aliencube.WebApi.Hal #
 
+## THIS IS NO LONGER DEVELOPED NOR MANAGED ##
+
+----
+
 **Aliencube.WebApi.Hal** provides REST responses with [HAL specification](https://tools.ietf.org/html/draft-kelly-json-hal) in Web API apps.
 
 
