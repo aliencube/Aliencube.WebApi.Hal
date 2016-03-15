@@ -130,7 +130,7 @@ namespace Aliencube.WebApi.App
                         // specific type, you can wire up one or more Schema filters.
                         //
                         //c.SchemaFilter<ApplySchemaVendorExtensions>();
-                        c.SchemaFilter<SwaggerHalSchemaFilter>();
+                        //c.SchemaFilter<SwaggerHalSchemaFilter>();
 
                         // Set this flag to omit schema property descriptions for any type properties decorated with the
                         // Obsolete attribute
@@ -165,7 +165,7 @@ namespace Aliencube.WebApi.App
                         //c.OperationFilter<AssignOAuth2SecurityRequirements>();
 
                         // http://blog.greatrexpectations.com/2015/03/18/custom-operation-names-with-swashbuckle-5-0/
-                        c.OperationFilter<SwaggerOperationFilter>();
+                        //c.OperationFilter<SwaggerOperationFilter>();
 
                         // Post-modify the entire Swagger document by wiring up one or more Document filters.
                         // This gives full control to modify the final SwaggerDocument. You should have a good understanding of
